@@ -10,10 +10,9 @@ namespace Proyecto1_Tron
 {
     public class Moto
     {
-        private FourNode currentNode;
-        private PictureBox pictureBox;
+        public FourNode currentNode;
+        public PictureBox motoPictureBox;
         private Form VentanaPrincipal;
-
         private List<PictureBox> estela;
         private int estelaLength = 3;
 
@@ -27,7 +26,27 @@ namespace Proyecto1_Tron
 
             // Inicializar la estela
             estela = new List<PictureBox>();
+            IniciarEstela();
+        }
 
+        private void IniciarMoto()
+        {
+            // Cargar una imagen desde un archivo o recurso
+            Image moto = Properties.Resources.moto;
+
+            // Crear y configurar PictureBox
+            motoPictureBox = new PictureBox
+            {
+                Image = moto,
+                SizeMode = PictureBoxSizeMode.AutoSize,
+                Location = new Point(currentNode.X, currentNode.Y)
+            };
+
+            VentanaPrincipal.Controls.Add(motoPictureBox);
+        }
+
+        private void IniciarEstela()
+        {
             for (int i = 0; i < estelaLength; i++)
             {
                 PictureBox estelaPictureBox = new PictureBox
@@ -39,60 +58,9 @@ namespace Proyecto1_Tron
                 estela.Add(estelaPictureBox);
                 VentanaPrincipal.Controls.Add(estelaPictureBox);
             }
-
-            // Configurar el formulario para capturar las teclas
-            VentanaPrincipal.KeyPreview = true;
-            VentanaPrincipal.KeyDown += new KeyEventHandler(PrecionaFlecha);
         }
 
-        public void IniciarMoto()
-        {
-            // Cargar una imagen desde un archivo o recurso
-            Image moto = Properties.Resources.moto;
-
-            // Crear y configurar PictureBox
-            pictureBox = new PictureBox
-            {
-                Image = moto,
-                SizeMode = PictureBoxSizeMode.AutoSize,
-                Location = new Point(currentNode.X, currentNode.Y)
-            };
-
-            VentanaPrincipal.Controls.Add(pictureBox);
-        }
-
-        private void PrecionaFlecha(object sender, KeyEventArgs e)
-        {
-            FourNode previousNode = currentNode;
-            // Mover el nodo actual basado en la tecla presionada
-            switch (e.KeyCode)
-            {
-                case Keys.Up:
-                    if (currentNode.Up != null)
-                        currentNode = currentNode.Up;
-                    break;
-                case Keys.Down:
-                    if (currentNode.Down != null)
-                        currentNode = currentNode.Down;
-                    break;
-                case Keys.Left:
-                    if (currentNode.Left != null)
-                        currentNode = currentNode.Left;
-                    break;
-                case Keys.Right:
-                    if (currentNode.Righ != null)
-                        currentNode = currentNode.Righ;
-                    break;
-            }
-
-            // Actualizar la posición del PictureBox
-            pictureBox.Location = new Point(currentNode.X, currentNode.Y);
-
-            // Actualizar la estela
-            UpdateEstela(previousNode);
-        }
-
-        private void UpdateEstela(FourNode previousNode)
+        public void UpdateEstela(FourNode previousNode)
         {
             // Mover cada imagen de la estela a la posición de la imagen de adelante
             for (int i = estela.Count - 1; i > 0; i--)
