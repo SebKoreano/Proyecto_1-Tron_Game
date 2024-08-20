@@ -13,7 +13,8 @@ namespace PruebasDePOO.Nodes
         public FourNode Up;
         public FourNode Down;
         public FourNode Left;
-        public FourNode Righ;
+        public FourNode Right;
+        public string Ocupante;
 
         public FourNode(int x, int y)
         {
@@ -22,7 +23,8 @@ namespace PruebasDePOO.Nodes
             Up = null;
             Down = null;
             Left = null;
-            Righ = null;
+            Right = null;
+            Ocupante = null;
         }
     }
 }

@@ -38,11 +38,27 @@ namespace Proyecto1_Tron
                         currentNode = currentNode.Left;
                     break;
                 case Keys.Right:
-                    if (currentNode.Righ != null)
-                        currentNode = currentNode.Righ;
+                    if (currentNode.Right != null)
+                        currentNode = currentNode.Right;
                     break;
             }
 
+            if (currentNode.Ocupante  == null)
+            {
+                currentNode.Ocupante = "moto";
+            }
+            if (currentNode.Ocupante == "estela")
+            {
+                moto.imprimir("Choque estela");
+            }
+            if (currentNode.Ocupante == "imagen")
+            {
+                moto.imprimir("Choque imagen");
+            }
+            if (currentNode.Ocupante == "moto")
+            {
+                moto.imprimir("Choque moto");
+            }
             // Actualizar la posición del PictureBox
             motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
 

@@ -28,19 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            textBox1 = new TextBox();
             SuspendLayout();
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(635, 578);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(100, 23);
+            textBox1.TabIndex = 0;
             // 
             // VentanaPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(899, 716);
+            Controls.Add(textBox1);
             Name = "VentanaPrincipal";
             Text = "TRON";
             Load += VentanaPrincipal_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private TextBox textBox1;
     }
 }

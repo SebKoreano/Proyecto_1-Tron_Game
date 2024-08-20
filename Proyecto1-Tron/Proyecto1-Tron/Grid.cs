@@ -46,7 +46,7 @@ namespace Proyecto1_Tron
                 {
                     x += 75;
                     newGrid.AddRight(x, y);
-                    TopNode = TopNode.Righ;
+                    TopNode = TopNode.Right;
                 }
             }
         }
@@ -56,34 +56,26 @@ namespace Proyecto1_Tron
             return newGrid.GetHead();
         }
 
-        public void TraverseAndDraw(Form form, Image image)
+        public FourNode FindNodeByCoordinates(int x, int y)
         {
             FourNode currentRow = newGrid.GetHead();
 
             while (currentRow != null)
             {
-                FourNode current = currentRow;
-
-                while (current != null)
+                FourNode currentNode = currentRow;
+                while (currentNode != null)
                 {
-                    // Crear un PictureBox para mostrar la imagen en la posición del nodo
-                    PictureBox pictureBox = new PictureBox();
-                    pictureBox.Image = image;
-                    pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
-
-                    // Asignar la posición en el formulario
-                    pictureBox.Location = new Point(current.X, current.Y);
-
-                    // Agregar el PictureBox al formulario
-                    form.Controls.Add(pictureBox);
-
-                    // Moverse al siguiente nodo a la derecha
-                    current = current.Righ;
+                    if (currentNode.X == x && currentNode.Y == y)
+                    {
+                        return currentNode;
+                    }
+                    currentNode = currentNode.Right;
                 }
-
-                // Moverse al siguiente nodo hacia abajo (siguiente fila)
                 currentRow = currentRow.Down;
             }
+
+            return null; // Retorna null si no se encuentra el nodo con las coordenadas especificadas
         }
+
     }
 }

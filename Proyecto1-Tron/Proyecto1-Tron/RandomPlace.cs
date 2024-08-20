@@ -13,12 +13,49 @@ namespace Proyecto1_Tron
         private Random random;
         private PictureBox randomPictureBox;
         private Form VentanaPrincipal;
+        private int maxImages = 3;
+        private int numImages = 0;
+        private Image[] Images;
+        private int cantidadImg;
 
-        public RandomPlace(Grid grid, Form VentanaPrincipal) 
+        public RandomPlace(Grid grid, Form VentanaPrincipal, string tipoImagen) 
         { 
             this.grid = grid;
             random = new Random();
             this.VentanaPrincipal = VentanaPrincipal;
+
+            if (tipoImagen == "items")
+            {
+                Images = [Properties.Resources.bomba1, Properties.Resources.gasolina, Properties.Resources.masEstela];
+                cantidadImg = 3;
+            }
+            else
+            {
+                if (tipoImagen == "poderes")
+                {
+                    Images = [Properties.Resources.escudo, Properties.Resources.velocidad];
+                    cantidadImg = 2;
+                }
+                else
+                {
+                    MessageBox.Show($"Error al ingresar el tipo de objeto que se va a generar", "Error de llamada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public async void GenerarImagenes()
+        {
+            while (true)
+            {
+                Image randomImage = Images[random.Next(cantidadImg)];
+
+                if (numImages < maxImages)
+                {
+                    PlaceRandomImage(randomImage);
+                }
+
+                await Task.Delay(500);
+            }
         }
 
         public void PlaceRandomImage(Image image)
@@ -44,7 +81,6 @@ namespace Proyecto1_Tron
             }
         }
 
-
         private void Place()
         {
             // Obtener el tamaño de la grid
@@ -59,16 +95,21 @@ namespace Proyecto1_Tron
             FourNode currentNode = grid.GetHead();
             for (int i = 0; i < randomColumn; i++)
             {
-                currentNode = currentNode.Righ;
+                currentNode = currentNode.Right;
             }
             for (int j = 0; j < randomRow; j++)
             {
                 currentNode = currentNode.Down;
             }
 
-            // Colocar la imagen en la posición aleatoria
-            randomPictureBox.Location = new Point(currentNode.X, currentNode.Y);
-            randomPictureBox.Visible = true; // Hacerla visible
+            if (currentNode.Ocupante == null)
+            {
+                currentNode.Ocupante = "imagen";
+                // Colocar la imagen en la posición aleatoria
+                randomPictureBox.Location = new Point(currentNode.X, currentNode.Y);
+                randomPictureBox.Visible = true; // Hacerla visible
+                numImages++;
+            }
         }
     }
 }

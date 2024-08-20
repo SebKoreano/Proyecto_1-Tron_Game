@@ -123,6 +123,16 @@ namespace Proyecto1_Tron.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap estela3 {
+            get {
+                object obj = ResourceManager.GetObject("estela3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap gasolina {
             get {
                 object obj = ResourceManager.GetObject("gasolina", resourceCulture);

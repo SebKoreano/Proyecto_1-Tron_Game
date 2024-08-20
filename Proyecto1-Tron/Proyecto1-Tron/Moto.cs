@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Proyecto1_Tron
 {
@@ -15,9 +16,12 @@ namespace Proyecto1_Tron
         private Form VentanaPrincipal;
         private List<PictureBox> estela;
         private int estelaLength = 3;
+        private Grid grid;
+        public FourNode lastNode;
 
         public Moto(Grid grid, Form ventanaPrincipal)
         {
+            this.grid = grid;
             // Inicializar el nodo actual (inicia en el head)
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
@@ -31,7 +35,7 @@ namespace Proyecto1_Tron
 
         private void IniciarMoto()
         {
-            // Cargar una imagen desde un archivo o recurso
+            // Cargar una imagen 
             Image moto = Properties.Resources.moto;
 
             // Crear y configurar PictureBox
@@ -51,7 +55,7 @@ namespace Proyecto1_Tron
             {
                 PictureBox estelaPictureBox = new PictureBox
                 {
-                    Image = Properties.Resources.estela2,
+                    Image = Properties.Resources.estela3,
                     SizeMode = PictureBoxSizeMode.AutoSize,
                     Location = new Point(currentNode.X, currentNode.Y)
                 };
@@ -62,13 +66,24 @@ namespace Proyecto1_Tron
 
         public void UpdateEstela(FourNode previousNode)
         {
+            // Actualizo el ultimo nodo para que ya no tenga estela
+            lastNode = grid.FindNodeByCoordinates(estela[estela.Count - 1].Location.X, estela[estela.Count - 1].Location.Y);
+            lastNode.Ocupante = null;
+
             // Mover cada imagen de la estela a la posición de la imagen de adelante
             for (int i = estela.Count - 1; i > 0; i--)
             {
                 estela[i].Location = estela[i - 1].Location;
             }
+
+            previousNode.Ocupante = "estela"; // Agrego estela al nodo antes de la moto
             // La primera imagen de la estela sigue a la moto
             estela[0].Location = new Point(previousNode.X, previousNode.Y);
+        }
+
+        public void imprimir(string msg)
+        {
+            VentanaPrincipal.Text = msg;
         }
     }
 }
