@@ -14,26 +14,18 @@ namespace Proyecto1_Tron
         public FourNode currentNode;
         public PictureBox motoPictureBox;
         private Form VentanaPrincipal;
-        private List<PictureBox> estela;
-        private int estelaLength = 3;
         private Grid grid;
-        public FourNode lastNode;
+        private Estela estela;
 
-        public Moto(Grid grid, Form ventanaPrincipal)
+        public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
             this.grid = grid;
-            // Inicializar el nodo actual (inicia en el head)
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
-
-            IniciarMoto();
-
-            // Inicializar la estela
-            estela = new List<PictureBox>();
-            IniciarEstela();
+            this.estela = estela;
         }
 
-        private void IniciarMoto()
+        public void IniciarMoto()
         {
             // Cargar una imagen 
             Image moto = Properties.Resources.moto;
@@ -49,36 +41,42 @@ namespace Proyecto1_Tron
             VentanaPrincipal.Controls.Add(motoPictureBox);
         }
 
-        private void IniciarEstela()
+        public void UpdateMoto(object sender, KeyEventArgs e)
         {
-            for (int i = 0; i < estelaLength; i++)
+            FourNode previousNode = currentNode;
+            // Mover el nodo actual basado en la tecla presionada
+            switch (e.KeyCode)
             {
-                PictureBox estelaPictureBox = new PictureBox
-                {
-                    Image = Properties.Resources.estela3,
-                    SizeMode = PictureBoxSizeMode.AutoSize,
-                    Location = new Point(currentNode.X, currentNode.Y)
-                };
-                estela.Add(estelaPictureBox);
-                VentanaPrincipal.Controls.Add(estelaPictureBox);
-            }
-        }
-
-        public void UpdateEstela(FourNode previousNode)
-        {
-            // Actualizo el ultimo nodo para que ya no tenga estela
-            lastNode = grid.FindNodeByCoordinates(estela[estela.Count - 1].Location.X, estela[estela.Count - 1].Location.Y);
-            lastNode.Ocupante = null;
-
-            // Mover cada imagen de la estela a la posición de la imagen de adelante
-            for (int i = estela.Count - 1; i > 0; i--)
-            {
-                estela[i].Location = estela[i - 1].Location;
+                case Keys.Up:
+                    if (currentNode.Up != null)
+                        currentNode = currentNode.Up;
+                    break;
+                case Keys.Down:
+                    if (currentNode.Down != null)
+                        currentNode = currentNode.Down;
+                    break;
+                case Keys.Left:
+                    if (currentNode.Left != null)
+                        currentNode = currentNode.Left;
+                    break;
+                case Keys.Right:
+                    if (currentNode.Right != null)
+                        currentNode = currentNode.Right;
+                    break;
             }
 
-            previousNode.Ocupante = "estela"; // Agrego estela al nodo antes de la moto
-            // La primera imagen de la estela sigue a la moto
-            estela[0].Location = new Point(previousNode.X, previousNode.Y);
+            if (currentNode.Ocupante == "imagen")
+            {
+
+            }
+            currentNode.Ocupante = "moto";
+            imprimir(currentNode.Ocupante);
+
+            // Actualizar la posición del PictureBox
+            motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
+
+            // Actualizar la estela
+            estela.UpdateEstela(previousNode);
         }
 
         public void imprimir(string msg)

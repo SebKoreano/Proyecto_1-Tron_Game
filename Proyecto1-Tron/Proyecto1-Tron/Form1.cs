@@ -10,6 +10,7 @@ namespace Proyecto1_Tron
     {
         private Grid grid;
         private Moto moto;
+        private Estela estela;
         private RandomPlace items;
         private RandomPlace poderes;
 
@@ -21,14 +22,17 @@ namespace Proyecto1_Tron
             grid = new Grid();
             grid.CreateGrid(12,10); // Crear un grid de 12x10
 
-            moto = new Moto(grid, this);
+            estela = new Estela(grid, this);
+            moto = new Moto(grid, this, estela);
             items = new RandomPlace(grid,this,"items");
             poderes = new RandomPlace(grid, this, "poderes");
 
-            KeyDown keyDown = new KeyDown(moto);
+            moto.IniciarMoto();
+            estela.IniciarEstela();
+
             // Configurar el formulario para capturar las teclas
             this.KeyPreview = true;
-            this.KeyDown += new KeyEventHandler(keyDown.PrecionarFlecha);
+            this.KeyDown += new KeyEventHandler(moto.UpdateMoto);
 
             // Ejecutar GenerarItems después de que la ventana se haya cargado
             this.Load += SpawnDeObjetos;

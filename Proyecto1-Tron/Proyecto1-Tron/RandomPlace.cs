@@ -58,7 +58,7 @@ namespace Proyecto1_Tron
             }
         }
 
-        public void PlaceRandomImage(Image image)
+        private void PlaceRandomImage(Image image)
         {
             if (VentanaPrincipal.InvokeRequired)
             {
