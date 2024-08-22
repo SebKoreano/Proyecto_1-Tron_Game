@@ -11,8 +11,8 @@ namespace Proyecto1_Tron
         private Grid grid;
         private Moto moto;
         private Estela estela;
-        private RandomPlace items;
-        private RandomPlace poderes;
+        private Items items;
+        private Poderes poderes;
 
         public VentanaPrincipal()
         {
@@ -24,8 +24,8 @@ namespace Proyecto1_Tron
 
             estela = new Estela(grid, this);
             moto = new Moto(grid, this, estela);
-            items = new RandomPlace(grid,this,"items");
-            poderes = new RandomPlace(grid, this, "poderes");
+            items = new Items(grid,this);
+            poderes = new Poderes(grid, this);
 
             moto.IniciarMoto();
             estela.IniciarEstela();

@@ -14,7 +14,7 @@ namespace PruebasDePOO.Nodes
         public FourNode Down;
         public FourNode Left;
         public FourNode Right;
-        public string Ocupante;
+        public object Ocupante;
 
         public FourNode(int x, int y)
         {

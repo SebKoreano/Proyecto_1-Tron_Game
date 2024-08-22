@@ -7,40 +7,22 @@ using System.Threading.Tasks;
 
 namespace Proyecto1_Tron
 {
-    public class RandomPlace
+    public class GestionImagenes
     {
-        private Grid grid;
-        private Random random;
-        private PictureBox randomPictureBox;
-        private Form VentanaPrincipal;
-        private int maxImages = 3;
-        private int numImages = 0;
-        private Image[] Images;
-        private int cantidadImg;
+        internal Grid grid;
+        internal Random random;
+        internal PictureBox randomPictureBox;
+        internal Form VentanaPrincipal;
+        internal int maxImages = 3;
+        internal int numImages = 0;
+        internal int cantidadImg;
+        internal Image[] Images;
 
-        public RandomPlace(Grid grid, Form VentanaPrincipal, string tipoImagen) 
+        public GestionImagenes(Grid grid, Form VentanaPrincipal) 
         { 
             this.grid = grid;
             random = new Random();
             this.VentanaPrincipal = VentanaPrincipal;
-
-            if (tipoImagen == "items")
-            {
-                Images = [Properties.Resources.bomba1, Properties.Resources.gasolina, Properties.Resources.masEstela];
-                cantidadImg = 3;
-            }
-            else
-            {
-                if (tipoImagen == "poderes")
-                {
-                    Images = [Properties.Resources.escudo, Properties.Resources.velocidad];
-                    cantidadImg = 2;
-                }
-                else
-                {
-                    MessageBox.Show($"Error al ingresar el tipo de objeto que se va a generar", "Error de llamada", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
         }
 
         public async void GenerarImagenes()

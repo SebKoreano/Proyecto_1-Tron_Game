@@ -69,8 +69,9 @@ namespace Proyecto1_Tron
             {
 
             }
+
             currentNode.Ocupante = "moto";
-            imprimir(currentNode.Ocupante);
+            imprimir($"{currentNode.Ocupante}");
 
             // Actualizar la posición del PictureBox
             motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
