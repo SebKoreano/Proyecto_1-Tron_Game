@@ -1,10 +1,7 @@
 ﻿using PruebasDePOO.Nodes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing; // Asegúrate de importar esta librería para utilizar Point
 
 namespace Proyecto1_Tron
 {
@@ -13,25 +10,132 @@ namespace Proyecto1_Tron
         public FourNode currentNode;
         public PictureBox motoPictureBox;
         private Form VentanaPrincipal;
-        private List<PictureBox> estela;
-        private int estelaLength = 3;
+        private Grid grid;
+        private Estela estela;
 
-        public Moto(Grid grid, Form ventanaPrincipal)
+        private int velocidad = 500; // Velocidad en milisegundos 
+        private int combustible = 100; // Cantidad inicial de combustible
+        private int casillasRecorridas = 0; // Contador de casillas recorridas
+
+        private System.Windows.Forms.Timer movimientoTimer; // Timer para manejar el movimiento automático
+
+        private string direccionActual = "Right"; // Variable para mantener la dirección actual
+
+        public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
-            // Inicializar el nodo actual (inicia en el head)
+            this.grid = grid;
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
+            this.estela = estela;
 
             IniciarMoto();
-
-            // Inicializar la estela
-            estela = new List<PictureBox>();
-            IniciarEstela();
+            estela.IniciarEstela();
+            // Inicializar el Timer
+            movimientoTimer = new System.Windows.Forms.Timer();
+            movimientoTimer.Interval = velocidad; // Intervalo basado en la velocidad
+            movimientoTimer.Tick += MovimientoAutomatico; // Evento de tick del Timer
         }
 
-        private void IniciarMoto()
+        // Método para iniciar el movimiento automático de la moto
+        public void IniciarMovimientoAutomatico()
         {
-            // Cargar una imagen desde un archivo o recurso
+            movimientoTimer.Start(); // Comenzar el Timer
+        }
+
+        // Método para detener el movimiento automático de la moto
+        public void DetenerMovimientoAutomatico()
+        {
+            movimientoTimer.Stop(); // Detener el Timer
+        }
+
+        // Método que maneja el movimiento automático
+        private void MovimientoAutomatico(object sender, EventArgs e)
+        {
+            if (combustible <= 0)
+            {
+                DetenerMovimientoAutomatico();
+                MessageBox.Show("La moto se ha quedado sin combustible!", "Combustible agotado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            FourNode nextNode = null;
+            // Determina el próximo nodo basado en la dirección actual
+            switch (direccionActual)
+            {
+                case "Up":
+                    nextNode = currentNode.Up;
+                    break;
+                case "Down":
+                    nextNode = currentNode.Down;
+                    break;
+                case "Left":
+                    nextNode = currentNode.Left;
+                    break;
+                case "Right":
+                    nextNode = currentNode.Right;
+                    break;
+            }
+
+            if (nextNode != null)
+            {
+                Mover(nextNode);
+            }
+            else
+            {
+                DetenerMovimientoAutomatico();
+            }
+        }
+
+        public void Mover(FourNode nextNode)
+        {
+            FourNode previousNode = currentNode;
+            currentNode = nextNode;
+
+            if (currentNode.Imagen != null && currentNode.Ocupante != null)
+            {
+                currentNode.Ocupante.Ejecutar(currentNode.Imagen);
+                VentanaPrincipal.Controls.Remove(currentNode.Imagen);
+                currentNode.Ocupante.numImages--;  // Decrementar el número de imágenes activas
+            }
+
+            //currentNode.Ocupante = this;
+
+            // Actualizar la posición del PictureBox
+            motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
+
+            // Actualizar la estela
+            estela.UpdateEstela(previousNode);
+
+            // Incrementar el contador de casillas recorridas
+            casillasRecorridas++;
+
+            // Verificar si se han recorrido 5 casillas para consumir combustible
+            if (casillasRecorridas >= 5)
+            {
+                combustible -= 1; // Reducir el combustible
+                casillasRecorridas = 0; // Reiniciar el contador
+                VentanaPrincipal.Text = $"Combustible restante: {combustible}";
+            }
+        }
+
+        // Método para cambiar la velocidad de la moto
+        public void CambiarVelocidad(int nuevaVelocidad)
+        {
+            velocidad = nuevaVelocidad;
+            movimientoTimer.Interval = velocidad;
+        }
+
+        // Método para incrementar el combustible (por ejemplo, al recoger un objeto)
+        public void IncrementarCombustible(int cantidad)
+        {
+            combustible += cantidad;
+            VentanaPrincipal.Text = $"Combustible restante: {combustible}";
+        }
+
+        // Método para inicializar la moto
+        public void IniciarMoto()
+        {
+            // Cargar una imagen 
             Image moto = Properties.Resources.moto;
 
             // Crear y configurar PictureBox
@@ -45,30 +149,34 @@ namespace Proyecto1_Tron
             VentanaPrincipal.Controls.Add(motoPictureBox);
         }
 
-        private void IniciarEstela()
+        // Método para manejar las teclas presionadas y cambiar la dirección
+        public void LeerTeclas(object sender, KeyEventArgs e)
         {
-            for (int i = 0; i < estelaLength; i++)
+            // Mover el nodo actual basado en la tecla presionada
+            switch (e.KeyCode)
             {
-                PictureBox estelaPictureBox = new PictureBox
-                {
-                    Image = Properties.Resources.estela2,
-                    SizeMode = PictureBoxSizeMode.AutoSize,
-                    Location = new Point(currentNode.X, currentNode.Y)
-                };
-                estela.Add(estelaPictureBox);
-                VentanaPrincipal.Controls.Add(estelaPictureBox);
+                case Keys.Up:
+                    if (currentNode.Up != null)
+                        direccionActual = "Up";
+                    break;
+                case Keys.Down:
+                    if (currentNode.Down != null)
+                        direccionActual = "Down";
+                    break;
+                case Keys.Left:
+                    if (currentNode.Left != null)
+                        direccionActual = "Left";
+                    break;
+                case Keys.Right:
+                    if (currentNode.Right != null)
+                        direccionActual = "Right";
+                    break;
             }
         }
 
-        public void UpdateEstela(FourNode previousNode)
+        public void imprimir(string msg)
         {
-            // Mover cada imagen de la estela a la posición de la imagen de adelante
-            for (int i = estela.Count - 1; i > 0; i--)
-            {
-                estela[i].Location = estela[i - 1].Location;
-            }
-            // La primera imagen de la estela sigue a la moto
-            estela[0].Location = new Point(previousNode.X, previousNode.Y);
+            VentanaPrincipal.Text = msg;
         }
     }
 }

@@ -24,11 +24,11 @@ namespace PruebasDePOO.Listas
             FourNode newNode = new FourNode(x, y);
             
             FourNode current = head;
-            while (current.Righ != null)
+            while (current.Right != null)
             {
-                current = current.Righ;
+                current = current.Right;
             }
-            current.Righ = newNode;
+            current.Right = newNode;
             newNode.Left = current;
             size++;
         }
@@ -46,7 +46,7 @@ namespace PruebasDePOO.Listas
             newNode.Up = current;
             if (LeftNode != null) 
             {
-                LeftNode.Righ = newNode;
+                LeftNode.Right = newNode;
                 newNode.Left = LeftNode;
             }
             
