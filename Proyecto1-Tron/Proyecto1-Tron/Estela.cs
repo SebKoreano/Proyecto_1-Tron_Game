@@ -50,7 +50,7 @@ namespace Proyecto1_Tron
                 estela[i].Location = estela[i - 1].Location;
             }
 
-            previousNode.Ocupante = "estela"; // Agrego estela al nodo antes de la moto
+            //previousNode.Ocupante = "estela"; // Agrego estela al nodo antes de la moto
             // La primera imagen de la estela sigue a la moto
             estela[0].Location = new Point(previousNode.X, previousNode.Y);
         }

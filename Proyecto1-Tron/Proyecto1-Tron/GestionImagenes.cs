@@ -11,12 +11,12 @@ namespace Proyecto1_Tron
     {
         internal Grid grid;
         internal Random random;
-        internal PictureBox randomPictureBox;
-        internal Form VentanaPrincipal;
-        internal int maxImages = 3;
-        internal int numImages = 0;
-        internal int cantidadImg;
         internal Image[] Images;
+        internal int cantidadImg;
+        internal int maxImages = 3;
+        public int numImages = 0;
+        internal Form VentanaPrincipal;
+        internal PictureBox randomPictureBox;
 
         public GestionImagenes(Grid grid, Form VentanaPrincipal) 
         { 
@@ -86,12 +86,23 @@ namespace Proyecto1_Tron
 
             if (currentNode.Ocupante == null)
             {
-                currentNode.Ocupante = "imagen";
+                currentNode.Ocupante = this;
+                currentNode.Imagen = randomPictureBox;
                 // Colocar la imagen en la posición aleatoria
                 randomPictureBox.Location = new Point(currentNode.X, currentNode.Y);
                 randomPictureBox.Visible = true; // Hacerla visible
                 numImages++;
             }
+        }
+
+        public void RemoveImagen()
+        {
+
+        }
+
+        public void Ejecutar(PictureBox Imagen)
+        {
+            VentanaPrincipal.Text = $"ENCONTRE ESCUDO!";
         }
     }
 }

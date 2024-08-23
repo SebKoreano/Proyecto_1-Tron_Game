@@ -14,6 +14,38 @@ namespace Proyecto1_Tron
             cantidadImg = 3;
         }
 
-        
+        public void Ejecutar(PictureBox Imagen)
+        {
+            if (Imagen.Image == Properties.Resources.bomba1)
+            {
+                Bomba();
+            }
+            else
+            {
+                if (Imagen.Image == Properties.Resources.gasolina)
+                {
+                    Gasolina();
+                }
+                else
+                {
+                    CreceEstela();
+                }
+            }
+        }
+
+        public void Bomba()
+        {
+
+        }
+
+        public void Gasolina()
+        {
+
+        }
+
+        public void CreceEstela()
+        {
+
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto1_Tron;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,8 @@ namespace PruebasDePOO.Nodes
         public FourNode Down;
         public FourNode Left;
         public FourNode Right;
-        public object Ocupante;
+        public GestionImagenes Ocupante;
+        public PictureBox Imagen;
 
         public FourNode(int x, int y)
         {
@@ -25,6 +27,7 @@ namespace PruebasDePOO.Nodes
             Left = null;
             Right = null;
             Ocupante = null;
+            Imagen = null;
         }
     }
 }

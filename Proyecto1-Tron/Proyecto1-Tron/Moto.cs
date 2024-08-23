@@ -13,7 +13,7 @@ namespace Proyecto1_Tron
         private Grid grid;
         private Estela estela;
 
-        private int velocidad = 500; // Velocidad en milisegundos (puedes ajustarla)
+        private int velocidad = 500; // Velocidad en milisegundos 
         private int combustible = 100; // Cantidad inicial de combustible
         private int casillasRecorridas = 0; // Contador de casillas recorridas
 
@@ -82,7 +82,6 @@ namespace Proyecto1_Tron
             }
             else
             {
-                // Cambia la dirección si llegas al final del grid (opcional)
                 DetenerMovimientoAutomatico();
             }
         }
@@ -91,6 +90,15 @@ namespace Proyecto1_Tron
         {
             FourNode previousNode = currentNode;
             currentNode = nextNode;
+
+            if (currentNode.Imagen != null && currentNode.Ocupante != null)
+            {
+                currentNode.Ocupante.Ejecutar(currentNode.Imagen);
+                VentanaPrincipal.Controls.Remove(currentNode.Imagen);
+                currentNode.Ocupante.numImages--;  // Decrementar el número de imágenes activas
+            }
+
+            //currentNode.Ocupante = this;
 
             // Actualizar la posición del PictureBox
             motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
