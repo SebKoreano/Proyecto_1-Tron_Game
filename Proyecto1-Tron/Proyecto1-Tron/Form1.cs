@@ -27,12 +27,12 @@ namespace Proyecto1_Tron
             items = new Items(grid,this);
             poderes = new Poderes(grid, this);
 
-            moto.IniciarMoto();
-            estela.IniciarEstela();
+            moto.IniciarMovimientoAutomatico();
+            
 
             // Configurar el formulario para capturar las teclas
             this.KeyPreview = true;
-            this.KeyDown += new KeyEventHandler(moto.UpdateMoto);
+            this.KeyDown += new KeyEventHandler(moto.LeerTeclas);
 
             // Ejecutar GenerarItems después de que la ventana se haya cargado
             this.Load += SpawnDeObjetos;

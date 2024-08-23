@@ -1,11 +1,7 @@
 ﻿using PruebasDePOO.Nodes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing; // Asegúrate de importar esta librería para utilizar Point
 
 namespace Proyecto1_Tron
 {
@@ -17,14 +13,118 @@ namespace Proyecto1_Tron
         private Grid grid;
         private Estela estela;
 
+        private int velocidad = 500; // Velocidad en milisegundos (puedes ajustarla)
+        private int combustible = 100; // Cantidad inicial de combustible
+        private int casillasRecorridas = 0; // Contador de casillas recorridas
+
+        private System.Windows.Forms.Timer movimientoTimer; // Timer para manejar el movimiento automático
+
+        private string direccionActual = "Right"; // Variable para mantener la dirección actual
+
         public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
             this.grid = grid;
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
             this.estela = estela;
+
+            IniciarMoto();
+            estela.IniciarEstela();
+            // Inicializar el Timer
+            movimientoTimer = new System.Windows.Forms.Timer();
+            movimientoTimer.Interval = velocidad; // Intervalo basado en la velocidad
+            movimientoTimer.Tick += MovimientoAutomatico; // Evento de tick del Timer
         }
 
+        // Método para iniciar el movimiento automático de la moto
+        public void IniciarMovimientoAutomatico()
+        {
+            movimientoTimer.Start(); // Comenzar el Timer
+        }
+
+        // Método para detener el movimiento automático de la moto
+        public void DetenerMovimientoAutomatico()
+        {
+            movimientoTimer.Stop(); // Detener el Timer
+        }
+
+        // Método que maneja el movimiento automático
+        private void MovimientoAutomatico(object sender, EventArgs e)
+        {
+            if (combustible <= 0)
+            {
+                DetenerMovimientoAutomatico();
+                MessageBox.Show("La moto se ha quedado sin combustible!", "Combustible agotado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            FourNode nextNode = null;
+            // Determina el próximo nodo basado en la dirección actual
+            switch (direccionActual)
+            {
+                case "Up":
+                    nextNode = currentNode.Up;
+                    break;
+                case "Down":
+                    nextNode = currentNode.Down;
+                    break;
+                case "Left":
+                    nextNode = currentNode.Left;
+                    break;
+                case "Right":
+                    nextNode = currentNode.Right;
+                    break;
+            }
+
+            if (nextNode != null)
+            {
+                Mover(nextNode);
+            }
+            else
+            {
+                // Cambia la dirección si llegas al final del grid (opcional)
+                DetenerMovimientoAutomatico();
+            }
+        }
+
+        public void Mover(FourNode nextNode)
+        {
+            FourNode previousNode = currentNode;
+            currentNode = nextNode;
+
+            // Actualizar la posición del PictureBox
+            motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
+
+            // Actualizar la estela
+            estela.UpdateEstela(previousNode);
+
+            // Incrementar el contador de casillas recorridas
+            casillasRecorridas++;
+
+            // Verificar si se han recorrido 5 casillas para consumir combustible
+            if (casillasRecorridas >= 5)
+            {
+                combustible -= 1; // Reducir el combustible
+                casillasRecorridas = 0; // Reiniciar el contador
+                VentanaPrincipal.Text = $"Combustible restante: {combustible}";
+            }
+        }
+
+        // Método para cambiar la velocidad de la moto
+        public void CambiarVelocidad(int nuevaVelocidad)
+        {
+            velocidad = nuevaVelocidad;
+            movimientoTimer.Interval = velocidad;
+        }
+
+        // Método para incrementar el combustible (por ejemplo, al recoger un objeto)
+        public void IncrementarCombustible(int cantidad)
+        {
+            combustible += cantidad;
+            VentanaPrincipal.Text = $"Combustible restante: {combustible}";
+        }
+
+        // Método para inicializar la moto
         public void IniciarMoto()
         {
             // Cargar una imagen 
@@ -41,43 +141,29 @@ namespace Proyecto1_Tron
             VentanaPrincipal.Controls.Add(motoPictureBox);
         }
 
-        public void UpdateMoto(object sender, KeyEventArgs e)
+        // Método para manejar las teclas presionadas y cambiar la dirección
+        public void LeerTeclas(object sender, KeyEventArgs e)
         {
-            FourNode previousNode = currentNode;
             // Mover el nodo actual basado en la tecla presionada
             switch (e.KeyCode)
             {
                 case Keys.Up:
                     if (currentNode.Up != null)
-                        currentNode = currentNode.Up;
+                        direccionActual = "Up";
                     break;
                 case Keys.Down:
                     if (currentNode.Down != null)
-                        currentNode = currentNode.Down;
+                        direccionActual = "Down";
                     break;
                 case Keys.Left:
                     if (currentNode.Left != null)
-                        currentNode = currentNode.Left;
+                        direccionActual = "Left";
                     break;
                 case Keys.Right:
                     if (currentNode.Right != null)
-                        currentNode = currentNode.Right;
+                        direccionActual = "Right";
                     break;
             }
-
-            if (currentNode.Ocupante == "imagen")
-            {
-
-            }
-
-            currentNode.Ocupante = "moto";
-            imprimir($"{currentNode.Ocupante}");
-
-            // Actualizar la posición del PictureBox
-            motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
-
-            // Actualizar la estela
-            estela.UpdateEstela(previousNode);
         }
 
         public void imprimir(string msg)
