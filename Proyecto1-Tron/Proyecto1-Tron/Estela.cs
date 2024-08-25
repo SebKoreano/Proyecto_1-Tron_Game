@@ -1,58 +1,79 @@
 ﻿using PruebasDePOO.Nodes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Proyecto1_Tron
 {
     public class Estela
     {
-        private List<PictureBox> estela;
-        public int estelaLength = 3;
-        public FourNode currentNode;
-        private Form VentanaPrincipal;
-        private Grid grid;
-        public FourNode lastNode;
+        private List<PictureBox> segmentosEstela; // Lista de segmentos que conforman la estela
+        private Form ventanaPrincipal;
+        private int longitudMaxima; // Longitud máxima de la estela
 
-        public Estela(Grid grid, Form ventanaPrincipal)
+        public Estela(Form ventanaPrincipal, int longitudInicial = 3)
         {
-            this.grid = grid;
-            VentanaPrincipal = ventanaPrincipal;
-            currentNode = grid.GetHead();
-            estela = new List<PictureBox>();
+            this.ventanaPrincipal = ventanaPrincipal;
+            segmentosEstela = new List<PictureBox>();
+            longitudMaxima = longitudInicial; // Valor inicial de longitud máxima
         }
-        public void IniciarEstela()
+
+        // Método para iniciar la estela en la posición inicial de la moto
+        public void IniciarEstela(FourNode posicionInicial)
         {
-            for (int i = 0; i < estelaLength; i++)
+            AgregarSegmento(posicionInicial);
+        }
+
+        // Método para actualizar la estela a medida que la moto se mueve
+        public void UpdateEstela(FourNode nuevaPosicion)
+        {
+            // Agregar un nuevo segmento a la estela en la nueva posición
+            AgregarSegmento(nuevaPosicion);
+
+            // Verificar si la longitud de la estela supera la longitud máxima permitida
+            if (segmentosEstela.Count > longitudMaxima)
             {
-                PictureBox estelaPictureBox = new PictureBox
-                {
-                    Image = Properties.Resources.estela3,
-                    SizeMode = PictureBoxSizeMode.AutoSize,
-                    Location = new Point(currentNode.X, currentNode.Y)
-                };
-                estela.Add(estelaPictureBox);
-                VentanaPrincipal.Controls.Add(estelaPictureBox);
+                // Remover el segmento más antiguo de la estela
+                RemoverSegmentoAntiguo();
             }
         }
 
-        public void UpdateEstela(FourNode previousNode)
+        // Método para agregar un nuevo segmento a la estela
+        private void AgregarSegmento(FourNode posicion)
         {
-            // Actualizo el ultimo nodo para que ya no tenga estela
-            lastNode = grid.FindNodeByCoordinates(estela[estela.Count - 1].Location.X, estela[estela.Count - 1].Location.Y);
-            lastNode.SetOcupante(null);
-
-            // Mover cada imagen de la estela a la posición de la imagen de adelante
-            for (int i = estela.Count - 1; i > 0; i--)
+            PictureBox nuevoSegmento = new PictureBox
             {
-                estela[i].Location = estela[i - 1].Location;
-            }
+                Size = new Size(10, 10), // Tamaño del segmento de la estela
+                BackColor = Color.Blue, // Color del segmento
+                Location = new Point(posicion.X, posicion.Y) // Posición basada en el nodo
+            };
 
-            //previousNode.Ocupante = "estela"; // Agrego estela al nodo antes de la moto
-            // La primera imagen de la estela sigue a la moto
-            estela[0].Location = new Point(previousNode.X, previousNode.Y);
+            segmentosEstela.Add(nuevoSegmento);
+            ventanaPrincipal.Controls.Add(nuevoSegmento); // Agregar el segmento al formulario
+        }
+
+        // Método para remover el segmento más antiguo de la estela
+        private void RemoverSegmentoAntiguo()
+        {
+            if (segmentosEstela.Count > 0)
+            {
+                PictureBox segmentoAntiguo = segmentosEstela[0];
+                ventanaPrincipal.Controls.Remove(segmentoAntiguo); // Remover del formulario
+                segmentosEstela.RemoveAt(0); // Remover de la lista
+                segmentoAntiguo.Dispose(); // Liberar recursos
+            }
+        }
+
+        // Método para incrementar la longitud máxima de la estela
+        public void IncrementarLongitud(int cantidad)
+        {
+            longitudMaxima += cantidad;
+        }
+
+        // Método para restablecer la longitud máxima de la estela (si es necesario)
+        public void ResetLongitud(int nuevaLongitud)
+        {
+            longitudMaxima = nuevaLongitud;
         }
     }
 }

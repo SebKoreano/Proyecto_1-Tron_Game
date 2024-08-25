@@ -29,7 +29,7 @@ namespace Proyecto1_Tron
             this.estela = estela;
 
             IniciarMoto();
-            estela.IniciarEstela();
+            estela.IniciarEstela(currentNode);
             // Inicializar el Timer
             movimientoTimer = new System.Windows.Forms.Timer();
             movimientoTimer.Interval = velocidad; // Intervalo basado en la velocidad
@@ -78,6 +78,7 @@ namespace Proyecto1_Tron
 
             if (nextNode != null)
             {
+                estela.UpdateEstela(currentNode);
                 Mover(nextNode);
             }
             else
@@ -96,9 +97,6 @@ namespace Proyecto1_Tron
 
             // Actualizar la posición del PictureBox
             motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
-
-            // Actualizar la estela
-            estela.UpdateEstela(previousNode);
 
             // Incrementar el contador de casillas recorridas
             casillasRecorridas++;

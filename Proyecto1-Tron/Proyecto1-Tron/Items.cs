@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PruebasDePOO.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,8 +46,7 @@ namespace Proyecto1_Tron
         public void CreceEstela(Moto moto, Estela estela)
         {
             moto.imprimir("3!");
-            estela.estelaLength++;
-            estela.IniciarEstela(); //TODO: Modificar el metodo para alagar la estela dinamicamente
+            estela.IncrementarLongitud(1); //TODO: Modificar el metodo para alagar la estela dinamicamente
         }
     }
 }

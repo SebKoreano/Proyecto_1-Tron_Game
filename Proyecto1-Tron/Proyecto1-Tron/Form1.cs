@@ -22,7 +22,7 @@ namespace Proyecto1_Tron
             grid = new Grid();
             grid.CreateGrid(12,10); // Crear un grid de 12x10
 
-            estela = new Estela(grid, this);
+            estela = new Estela(this);
             moto = new Moto(grid, this, estela);
             items = new Items(grid,this);
             poderes = new Poderes(grid, this);
