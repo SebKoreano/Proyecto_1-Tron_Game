@@ -69,11 +69,5 @@ namespace Proyecto1_Tron
         {
             longitudMaxima += cantidad;
         }
-
-        // Método para restablecer la longitud máxima de la estela (si es necesario)
-        public void ResetLongitud(int nuevaLongitud)
-        {
-            longitudMaxima = nuevaLongitud;
-        }
     }
 }
