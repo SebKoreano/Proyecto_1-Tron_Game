@@ -14,24 +14,25 @@ namespace Proyecto1_Tron
             cantidadImg = 2;
         }
 
-        public void Ejecutar(PictureBox Imagen)
+        public new void Ejecutar(PictureBox Imagen, Moto moto, Estela estela)
         {
-            if (Imagen.Image == Properties.Resources.escudo)
+            if (Imagen.Image.PhysicalDimension.Width == 23)
             {
-                Escudo();
+                Escudo(moto, estela);
             }
             else
             {
-                Velocidad();
+                Velocidad(moto, estela);
             }
         }
 
-        public void Escudo()
+        public void Escudo(Moto moto, Estela estela)
         {
-            VentanaPrincipal.Text = $"ENCONTRE ESCUDO!";
+            moto.imprimir("esoo!");
         }
-        public void Velocidad()
+        public void Velocidad(Moto moto, Estela estela)
         {
+            moto.CambiarVelocidad(moto.velocidad/2);
         }
     }
 }

@@ -14,38 +14,39 @@ namespace Proyecto1_Tron
             cantidadImg = 3;
         }
 
-        public void Ejecutar(PictureBox Imagen)
+        public void Ejecutar(PictureBox Imagen, Moto moto, Estela estela)
         {
-            if (Imagen.Image == Properties.Resources.bomba1)
+            if (Imagen.Image.PhysicalDimension.Width == 28)
             {
-                Bomba();
+                Bomba(moto, estela);
+            }
+            else if (Imagen.Image.PhysicalDimension.Width == 38)
+            {
+                Gasolina(moto, estela);
             }
             else
             {
-                if (Imagen.Image == Properties.Resources.gasolina)
-                {
-                    Gasolina();
-                }
-                else
-                {
-                    CreceEstela();
-                }
+                CreceEstela(moto, estela);
             }
         }
 
-        public void Bomba()
+        public void Bomba(Moto moto, Estela estela)
         {
-
+            moto.imprimir("1!");
+            moto.DetenerMovimientoAutomatico();
         }
 
-        public void Gasolina()
+        public void Gasolina(Moto moto, Estela estela)
         {
-
+            moto.imprimir("2!");
+            moto.gasolina += 10;
         }
 
-        public void CreceEstela()
+        public void CreceEstela(Moto moto, Estela estela)
         {
-
+            moto.imprimir("3!");
+            estela.estelaLength++;
+            estela.IniciarEstela(); //TODO: Modificar el metodo para alagar la estela dinamicamente
         }
     }
 }

@@ -13,8 +13,8 @@ namespace Proyecto1_Tron
         private Grid grid;
         private Estela estela;
 
-        private int velocidad = 500; // Velocidad en milisegundos 
-        private int combustible = 100; // Cantidad inicial de combustible
+        public int velocidad = 500; // Velocidad en milisegundos 
+        public int gasolina = 100; // Cantidad inicial de gasolina
         private int casillasRecorridas = 0; // Contador de casillas recorridas
 
         private System.Windows.Forms.Timer movimientoTimer; // Timer para manejar el movimiento automático
@@ -46,15 +46,15 @@ namespace Proyecto1_Tron
         public void DetenerMovimientoAutomatico()
         {
             movimientoTimer.Stop(); // Detener el Timer
+            MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         // Método que maneja el movimiento automático
         private void MovimientoAutomatico(object sender, EventArgs e)
         {
-            if (combustible <= 0)
+            if (gasolina <= 0)
             {
                 DetenerMovimientoAutomatico();
-                MessageBox.Show("La moto se ha quedado sin combustible!", "Combustible agotado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -91,14 +91,8 @@ namespace Proyecto1_Tron
             FourNode previousNode = currentNode;
             currentNode = nextNode;
 
-            if (currentNode.Imagen != null && currentNode.Ocupante != null)
-            {
-                currentNode.Ocupante.Ejecutar(currentNode.Imagen);
-                VentanaPrincipal.Controls.Remove(currentNode.Imagen);
-                currentNode.Ocupante.numImages--;  // Decrementar el número de imágenes activas
-            }
-
-            //currentNode.Ocupante = this;
+            //imprimir($"{currentNode.Ocupante}");
+            //currentNode.SetOcupante(this);
 
             // Actualizar la posición del PictureBox
             motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
@@ -109,12 +103,32 @@ namespace Proyecto1_Tron
             // Incrementar el contador de casillas recorridas
             casillasRecorridas++;
 
-            // Verificar si se han recorrido 5 casillas para consumir combustible
+            if (currentNode.Imagen != null && currentNode.Ocupante != null)
+            {
+                if (currentNode.Ocupante == "Moto")
+                {
+                    //currentNode.Moto;
+                }
+                else if (currentNode.Ocupante == "Item")
+                {
+                    currentNode.Item.Ejecutar(currentNode.Imagen, this, estela);
+                    currentNode.Item.numImages--;
+                    VentanaPrincipal.Controls.Remove(currentNode.Imagen);
+                }
+                else if (currentNode.Ocupante == "Poder")
+                {
+                    currentNode.Poder.Ejecutar(currentNode.Imagen, this, estela);
+                    currentNode.Poder.numImages--;
+                    VentanaPrincipal.Controls.Remove(currentNode.Imagen);
+                }
+            }
+
+            // Verificar si se han recorrido 5 casillas para consumir gasolina
             if (casillasRecorridas >= 5)
             {
-                combustible -= 1; // Reducir el combustible
+                gasolina -= 1; // Reducir el gasolina
                 casillasRecorridas = 0; // Reiniciar el contador
-                VentanaPrincipal.Text = $"Combustible restante: {combustible}";
+                VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
             }
         }
 
@@ -125,11 +139,11 @@ namespace Proyecto1_Tron
             movimientoTimer.Interval = velocidad;
         }
 
-        // Método para incrementar el combustible (por ejemplo, al recoger un objeto)
-        public void IncrementarCombustible(int cantidad)
+        // Método para incrementar el gasolina (por ejemplo, al recoger un objeto)
+        public void Incrementargasolina(int cantidad)
         {
-            combustible += cantidad;
-            VentanaPrincipal.Text = $"Combustible restante: {combustible}";
+            gasolina += cantidad;
+            VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
         }
 
         // Método para inicializar la moto

@@ -84,25 +84,15 @@ namespace Proyecto1_Tron
                 currentNode = currentNode.Down;
             }
 
-            if (currentNode.Ocupante == null)
+            if (currentNode.GetOcupante() == null)
             {
-                currentNode.Ocupante = this;
+                currentNode.SetOcupante(this);
                 currentNode.Imagen = randomPictureBox;
                 // Colocar la imagen en la posición aleatoria
                 randomPictureBox.Location = new Point(currentNode.X, currentNode.Y);
                 randomPictureBox.Visible = true; // Hacerla visible
                 numImages++;
             }
-        }
-
-        public void RemoveImagen()
-        {
-
-        }
-
-        public void Ejecutar(PictureBox Imagen)
-        {
-            VentanaPrincipal.Text = $"ENCONTRE ESCUDO!";
         }
     }
 }

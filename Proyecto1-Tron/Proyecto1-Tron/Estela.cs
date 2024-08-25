@@ -10,7 +10,7 @@ namespace Proyecto1_Tron
     public class Estela
     {
         private List<PictureBox> estela;
-        private int estelaLength = 3;
+        public int estelaLength = 3;
         public FourNode currentNode;
         private Form VentanaPrincipal;
         private Grid grid;
@@ -42,7 +42,7 @@ namespace Proyecto1_Tron
         {
             // Actualizo el ultimo nodo para que ya no tenga estela
             lastNode = grid.FindNodeByCoordinates(estela[estela.Count - 1].Location.X, estela[estela.Count - 1].Location.Y);
-            lastNode.Ocupante = null;
+            lastNode.SetOcupante(null);
 
             // Mover cada imagen de la estela a la posición de la imagen de adelante
             for (int i = estela.Count - 1; i > 0; i--)
