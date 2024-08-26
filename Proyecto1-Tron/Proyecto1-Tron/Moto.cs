@@ -1,25 +1,24 @@
-﻿using PruebasDePOO.Nodes;
-using System;
-using System.Windows.Forms;
-using System.Drawing; // Asegúrate de importar esta librería para utilizar Point
+﻿using Proyecto1_Tron;
+using PruebasDePOO.Nodes;
+using System.Collections.Generic; // Para LinkedList
 
 namespace Proyecto1_Tron
 {
     public class Moto
     {
+        public LinkedList<Segmento> segmentos; // Lista enlazada que contiene la moto y los segmentos de la estela
         public FourNode currentNode;
         public PictureBox motoPictureBox;
         private Form VentanaPrincipal;
         private Grid grid;
         private Estela estela;
 
-        public int velocidad = 500; // Velocidad en milisegundos 
-        public int gasolina = 100; // Cantidad inicial de gasolina
-        private int casillasRecorridas = 0; // Contador de casillas recorridas
+        public int velocidad = 500;
+        public int gasolina = 100;
+        private int casillasRecorridas = 0;
 
-        private System.Windows.Forms.Timer movimientoTimer; // Timer para manejar el movimiento automático
-
-        private string direccionActual = "Right"; // Variable para mantener la dirección actual
+        private System.Windows.Forms.Timer movimientoTimer;
+        private string direccionActual = "Right";
 
         public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
@@ -28,28 +27,26 @@ namespace Proyecto1_Tron
             VentanaPrincipal = ventanaPrincipal;
             this.estela = estela;
 
+            segmentos = new LinkedList<Segmento>(); // Inicializa la lista enlazada
             IniciarMoto();
-            estela.IniciarEstela(currentNode);
+
             // Inicializar el Timer
             movimientoTimer = new System.Windows.Forms.Timer();
-            movimientoTimer.Interval = velocidad; // Intervalo basado en la velocidad
-            movimientoTimer.Tick += MovimientoAutomatico; // Evento de tick del Timer
+            movimientoTimer.Interval = velocidad;
+            movimientoTimer.Tick += MovimientoAutomatico;
         }
 
-        // Método para iniciar el movimiento automático de la moto
         public void IniciarMovimientoAutomatico()
         {
-            movimientoTimer.Start(); // Comenzar el Timer
+            movimientoTimer.Start();
         }
 
-        // Método para detener el movimiento automático de la moto
         public void DetenerMovimientoAutomatico()
         {
-            movimientoTimer.Stop(); // Detener el Timer
+            movimientoTimer.Stop();
             MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        // Método que maneja el movimiento automático
         private void MovimientoAutomatico(object sender, EventArgs e)
         {
             if (gasolina <= 0)
@@ -59,7 +56,7 @@ namespace Proyecto1_Tron
             }
 
             FourNode nextNode = null;
-            // Determina el próximo nodo basado en la dirección actual
+
             switch (direccionActual)
             {
                 case "Up":
@@ -78,7 +75,7 @@ namespace Proyecto1_Tron
 
             if (nextNode != null)
             {
-                estela.UpdateEstela(currentNode);
+                estela.ManejarEstela(currentNode);
                 Mover(nextNode);
             }
             else
@@ -89,18 +86,22 @@ namespace Proyecto1_Tron
 
         public void Mover(FourNode nextNode)
         {
-            FourNode previousNode = currentNode;
             currentNode = nextNode;
-
-            //imprimir($"{currentNode.Ocupante}");
-            //currentNode.SetOcupante(this);
-
-            // Actualizar la posición del PictureBox
             motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
-
-            // Incrementar el contador de casillas recorridas
             casillasRecorridas++;
 
+            HitBox();
+
+            if (casillasRecorridas >= 5)
+            {
+                gasolina -= 1;
+                casillasRecorridas = 0;
+                VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
+            }
+        }
+
+        public void HitBox()
+        {
             if (currentNode.Imagen != null && currentNode.Ocupante != null)
             {
                 if (currentNode.Ocupante == "Moto")
@@ -120,37 +121,11 @@ namespace Proyecto1_Tron
                     VentanaPrincipal.Controls.Remove(currentNode.Imagen);
                 }
             }
-
-            // Verificar si se han recorrido 5 casillas para consumir gasolina
-            if (casillasRecorridas >= 5)
-            {
-                gasolina -= 1; // Reducir el gasolina
-                casillasRecorridas = 0; // Reiniciar el contador
-                VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
-            }
         }
 
-        // Método para cambiar la velocidad de la moto
-        public void CambiarVelocidad(int nuevaVelocidad)
+        private void IniciarMoto()
         {
-            velocidad = nuevaVelocidad;
-            movimientoTimer.Interval = velocidad;
-        }
-
-        // Método para incrementar el gasolina (por ejemplo, al recoger un objeto)
-        public void Incrementargasolina(int cantidad)
-        {
-            gasolina += cantidad;
-            VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
-        }
-
-        // Método para inicializar la moto
-        public void IniciarMoto()
-        {
-            // Cargar una imagen 
-            Image moto = Properties.Resources.moto;
-
-            // Crear y configurar PictureBox
+            Image moto = Proyecto1_Tron.Properties.Resources.moto;
             motoPictureBox = new PictureBox
             {
                 Image = moto,
@@ -159,12 +134,26 @@ namespace Proyecto1_Tron
             };
 
             VentanaPrincipal.Controls.Add(motoPictureBox);
+
+            // Añadir la moto a la lista de segmentos
+            segmentos.AddFirst(new Segmento(motoPictureBox, currentNode, true));
         }
 
-        // Método para manejar las teclas presionadas y cambiar la dirección
+
+        public void CambiarVelocidad(int nuevaVelocidad)
+        {
+            velocidad = nuevaVelocidad;
+            movimientoTimer.Interval = velocidad;
+        }
+
+        public void Incrementargasolina(int cantidad)
+        {
+            gasolina += cantidad;
+            //VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
+        }
+
         public void LeerTeclas(object sender, KeyEventArgs e)
         {
-            // Mover el nodo actual basado en la tecla presionada
             switch (e.KeyCode)
             {
                 case Keys.Up:
@@ -192,3 +181,4 @@ namespace Proyecto1_Tron
         }
     }
 }
+
