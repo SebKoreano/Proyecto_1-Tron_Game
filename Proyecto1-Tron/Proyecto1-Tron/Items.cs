@@ -15,7 +15,7 @@ namespace Proyecto1_Tron
             cantidadImg = 3;
         }
 
-        public void Ejecutar(PictureBox Imagen, Moto moto, Estela estela)
+        public void Ejecutar(PictureBox Imagen, Moto moto, Estela estela, FourNode itemNode)
         {
             if (Imagen.Image.PhysicalDimension.Width == 28)
             {
@@ -23,7 +23,7 @@ namespace Proyecto1_Tron
             }
             else if (Imagen.Image.PhysicalDimension.Width == 38)
             {
-                Gasolina(moto, estela);
+                Gasolina(moto, estela, itemNode);
             }
             else
             {
@@ -33,19 +33,24 @@ namespace Proyecto1_Tron
 
         public void Bomba(Moto moto, Estela estela)
         {
-            moto.imprimir("1!");
             moto.DetenerMovimientoAutomatico();
         }
 
-        public void Gasolina(Moto moto, Estela estela)
+        public void Gasolina(Moto moto, Estela estela, FourNode itemNode)
         {
-            moto.imprimir("2!");
-            moto.gasolina += 10;
+            if ((moto.gasolina + 10) <= 100)
+            {
+                moto.gasolina += 10;
+            }
+            else
+            {
+                moto.itemsRecogidos.Enqueue(itemNode);
+            }
+            
         }
 
         public void CreceEstela(Moto moto, Estela estela)
         {
-            moto.imprimir("3!");
             estela.IncrementarLongitud(1); 
         }
     }

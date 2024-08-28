@@ -13,39 +13,44 @@ namespace Proyecto1_Tron
         private Estela estela;
         private Items items;
         private Poderes poderes;
+        private List<Enemigo> enemigos; // Lista de enemigos
 
         public VentanaPrincipal()
         {
             InitializeComponent();
 
-            // Inicializar la lista y la grid
             grid = new Grid();
-            grid.CreateGrid(12,10); // Crear un grid de 12x10
+            grid.CreateGrid(12, 10);
 
             estela = new Estela(this);
             moto = new Moto(grid, this, estela);
-            items = new Items(grid,this);
-            poderes = new Poderes(grid, this);
+            items = new Items(grid, this);
+            poderes = new Poderes(grid, this, moto, estela);
+
+            enemigos = new List<Enemigo>();
+            //AgregarEnemigos(3); // Agregar 3 enemigos
 
             moto.IniciarTimers();
-            
 
-            // Configurar el formulario para capturar las teclas
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(moto.LeerTeclas);
 
-            // Ejecutar GenerarItems después de que la ventana se haya cargado
             this.Load += SpawnDeObjetos;
+        }
+
+        private void AgregarEnemigos(int cantidad)
+        {
+            for (int i = 0; i < cantidad; i++)
+            {
+                Enemigo nuevoEnemigo = new Enemigo(grid, this, estela);
+                enemigos.Add(nuevoEnemigo);
+            }
         }
 
         private async void SpawnDeObjetos(object sender, EventArgs e)
         {
             await Task.Run(() => items.GenerarImagenes());
             await Task.Run(() => poderes.GenerarImagenes());
-        }
-
-        private void VentanaPrincipal_Load(object sender, EventArgs e)
-        {
         }
     }
 }

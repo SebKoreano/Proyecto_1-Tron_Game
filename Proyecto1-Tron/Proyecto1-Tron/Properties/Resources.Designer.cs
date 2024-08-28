@@ -213,6 +213,26 @@ namespace Proyecto1_Tron.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap motoEscudo {
+            get {
+                object obj = ResourceManager.GetObject("motoEscudo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap motoVelocidad {
+            get {
+                object obj = ResourceManager.GetObject("motoVelocidad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap velocidad {
             get {
                 object obj = ResourceManager.GetObject("velocidad", resourceCulture);

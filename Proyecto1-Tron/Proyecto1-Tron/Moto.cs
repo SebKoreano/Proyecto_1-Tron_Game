@@ -11,19 +11,25 @@ namespace Proyecto1_Tron
         public PictureBox motoPictureBox;
         private Form VentanaPrincipal;
         private Grid grid;
-        private Estela estela;
+        public Estela estela;
         public int velocidad = 500;
+        public const int normalVelocidad = 500;
         public int gasolina = 100;
         private int casillasRecorridas = 0;
         private System.Windows.Forms.Timer movimientoTimer;
-        private string direccionActual = "Right";
+        public string direccionActual = "Right";
 
-        private Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
+        public Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
         private FourNode itemNode;
         private Items itemEjecutable;
-        private Stack<Poderes> poderesRecogidos = new Stack<Poderes>();
         public int itemsVelocidad = 1000;
         private System.Windows.Forms.Timer itemsTimer;
+
+        private Stack<FourNode> poderesRecogidos = new Stack<FourNode>();
+        public bool puedeMorir=true;
+
+        public Label gasolinaDisplay;
+        public PictureBox poderDisplay;
 
         public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
@@ -36,6 +42,8 @@ namespace Proyecto1_Tron
             IniciarMoto();
 
             SetTimers();
+
+            IniciarDisplays();
         }
 
         public void SetTimers()
@@ -56,7 +64,7 @@ namespace Proyecto1_Tron
             {
                 itemNode = itemsRecogidos.Dequeue();
                 itemEjecutable = itemNode.Item;
-                itemEjecutable.Ejecutar(itemNode.Imagen, this, estela);
+                itemEjecutable.Ejecutar(itemNode.Imagen, this, estela, itemNode);
             }
         }
         public void IniciarTimers()
@@ -67,8 +75,11 @@ namespace Proyecto1_Tron
 
         public void DetenerMovimientoAutomatico()
         {
-            movimientoTimer.Stop();
-            MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (puedeMorir)
+            {
+                movimientoTimer.Stop();
+                MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void MovimientoAutomatico(object sender, EventArgs e)
@@ -120,7 +131,7 @@ namespace Proyecto1_Tron
             {
                 gasolina -= 1;
                 casillasRecorridas = 0;
-                VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
+                gasolinaDisplay.Text = $"{gasolina}";
             }
         }
 
@@ -144,7 +155,8 @@ namespace Proyecto1_Tron
                 }
                 else if (currentNode.Ocupante == "Poder")
                 {
-                    currentNode.Poder.Ejecutar(currentNode.Imagen, this, estela);
+                    poderesRecogidos.Push(currentNode);
+                    ActualizarPoderDisplay();
                     currentNode.Poder.numImages--;
                     VentanaPrincipal.Controls.Remove(currentNode.Imagen);
                 }
@@ -177,7 +189,38 @@ namespace Proyecto1_Tron
         public void Incrementargasolina(int cantidad)
         {
             gasolina += cantidad;
-            //VentanaPrincipal.Text = $"gasolina restante: {gasolina}";
+        }
+
+        // Método para ejecutar el poder en la parte superior de la pila
+        public void EjecutarPoder()
+        {
+            if (poderesRecogidos.Count > 0)
+            {
+                FourNode poderNode = poderesRecogidos.Pop();
+                poderNode.Poder.Ejecutar(poderNode.Imagen);
+                poderDisplay.Image = null; // Limpiar la imagen del poder
+                ActualizarPoderDisplay(); // Actualizar la imagen del siguiente poder
+            }
+        }
+
+        // Método para cambiar el orden de la pila de poderes
+        public void CambiarOrdenPoderes()
+        {
+            poderesRecogidos = new Stack<FourNode>(poderesRecogidos);
+            ActualizarPoderDisplay(); // Actualizar la imagen del nuevo poder
+        }
+
+        // Método para actualizar la imagen del poder actual en el display
+        public void ActualizarPoderDisplay()
+        {
+            if (poderesRecogidos.Count > 0)
+            {
+                poderDisplay.Image = poderesRecogidos.Peek().Imagen.Image;
+            }
+            else
+            {
+                poderDisplay.Image = null;
+            }
         }
 
         public void LeerTeclas(object sender, KeyEventArgs e)
@@ -200,12 +243,45 @@ namespace Proyecto1_Tron
                     if (currentNode.Right != null)
                         direccionActual = "Right";
                     break;
+                case Keys.E:
+                    EjecutarPoder(); // Ejecutar el poder en la parte superior de la pila
+                    break;
+                case Keys.R:
+                    CambiarOrdenPoderes(); // Cambiar el orden de la pila de poderes
+                    break;
             }
         }
 
-        public void imprimir(string msg)
+        public void IniciarDisplays()
         {
-            VentanaPrincipal.Text = msg;
+            // 
+            // gasolinaDisplay
+            // 
+            gasolinaDisplay = new Label();
+            gasolinaDisplay.AutoSize = true;
+            gasolinaDisplay.BackColor = SystemColors.ActiveBorder;
+            gasolinaDisplay.Font = new Font("Microsoft YaHei", 15F, FontStyle.Bold);
+            gasolinaDisplay.ForeColor = SystemColors.ButtonHighlight;
+            gasolinaDisplay.Location = new Point(791, 730);
+            gasolinaDisplay.Name = "gasolinaDisplay";
+            gasolinaDisplay.Size = new Size(48, 27);
+            gasolinaDisplay.TabIndex = 1;
+            gasolinaDisplay.Text = "100";
+            VentanaPrincipal.Controls.Add(gasolinaDisplay);
+            gasolinaDisplay.BringToFront();
+            // 
+            // poderDisplay
+            // 
+            poderDisplay = new PictureBox();
+            poderDisplay.BackColor = SystemColors.ActiveBorder;
+            poderDisplay.Location = new Point(306, 725);
+            poderDisplay.Name = "poderDisplay";
+            poderDisplay.Size = new Size(100, 50);
+            poderDisplay.SizeMode = PictureBoxSizeMode.AutoSize;
+            poderDisplay.TabIndex = 2;
+            poderDisplay.TabStop = false;
+            VentanaPrincipal.Controls.Add(poderDisplay);
+            poderDisplay.BringToFront();
         }
     }
 }
