@@ -46,7 +46,7 @@ namespace Proyecto1_Tron
         public void CreceEstela(Moto moto, Estela estela)
         {
             moto.imprimir("3!");
-            estela.IncrementarLongitud(1); //TODO: Modificar el metodo para alagar la estela dinamicamente
+            estela.IncrementarLongitud(1); 
         }
     }
 }

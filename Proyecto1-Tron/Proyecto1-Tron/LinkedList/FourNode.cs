@@ -15,6 +15,7 @@ namespace PruebasDePOO.Nodes
         public Moto moto;
         public Items Item;
         public FourNode Up;
+        public Estela estela;
         public Poderes Poder;
         public FourNode Down;
         public FourNode Left;
@@ -52,6 +53,11 @@ namespace PruebasDePOO.Nodes
             {
                 Poder = (Poderes)obj;
                 Ocupante = "Poder";
+            }
+            else if (obj is Estela)
+            {
+                estela = (Estela)obj;
+                Ocupante = "Estela";
             }
             else if (obj == null)
             {

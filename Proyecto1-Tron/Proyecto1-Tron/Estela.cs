@@ -28,7 +28,7 @@ namespace Proyecto1_Tron
             while (segmentosEstela.Count > longitudMaxima)
             {
                 // Eliminar el segmento más antiguo de la estela
-                RemoverSegmentoAntiguo();
+                RemoverSegmentoAntiguo(nuevaPosicion);
             }
         }
 
@@ -44,10 +44,11 @@ namespace Proyecto1_Tron
 
             segmentosEstela.AddLast(nuevoSegmento);
             ventanaPrincipal.Controls.Add(nuevoSegmento); // Agregar el segmento al formulario
+            posicion.SetOcupante(this);
         }
 
         // Método para remover el segmento más antiguo de la estela
-        private void RemoverSegmentoAntiguo()
+        private void RemoverSegmentoAntiguo(FourNode posicion)
         {
             if (segmentosEstela.Count > 0)
             {
@@ -55,6 +56,7 @@ namespace Proyecto1_Tron
                 ventanaPrincipal.Controls.Remove(segmentoAntiguo); // Remover del formulario
                 segmentosEstela.RemoveFirst(); // Remover de la lista
                 segmentoAntiguo.Dispose(); // Liberar recursos
+                //posicion.SetOcupante(null);
             }
         }
 

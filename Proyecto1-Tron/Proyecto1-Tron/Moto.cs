@@ -1,6 +1,6 @@
 ﻿using Proyecto1_Tron;
 using PruebasDePOO.Nodes;
-using System.Collections.Generic; // Para LinkedList
+using System.Collections.Generic; 
 
 namespace Proyecto1_Tron
 {
@@ -12,13 +12,18 @@ namespace Proyecto1_Tron
         private Form VentanaPrincipal;
         private Grid grid;
         private Estela estela;
-
         public int velocidad = 500;
         public int gasolina = 100;
         private int casillasRecorridas = 0;
-
         private System.Windows.Forms.Timer movimientoTimer;
         private string direccionActual = "Right";
+
+        private Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
+        private FourNode itemNode;
+        private Items itemEjecutable;
+        private Stack<Poderes> poderesRecogidos = new Stack<Poderes>();
+        public int itemsVelocidad = 1000;
+        private System.Windows.Forms.Timer itemsTimer;
 
         public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
@@ -30,15 +35,34 @@ namespace Proyecto1_Tron
             segmentos = new LinkedList<Segmento>(); // Inicializa la lista enlazada
             IniciarMoto();
 
+            SetTimers();
+        }
+
+        public void SetTimers()
+        {
             // Inicializar el Timer
             movimientoTimer = new System.Windows.Forms.Timer();
             movimientoTimer.Interval = velocidad;
             movimientoTimer.Tick += MovimientoAutomatico;
+
+            itemsTimer = new System.Windows.Forms.Timer();
+            itemsTimer.Interval = itemsVelocidad;
+            itemsTimer.Tick += EjecutarItems;
         }
 
-        public void IniciarMovimientoAutomatico()
+        public void EjecutarItems(object sender, EventArgs e)
+        {
+            if (itemsRecogidos.Count > 0)
+            {
+                itemNode = itemsRecogidos.Dequeue();
+                itemEjecutable = itemNode.Item;
+                itemEjecutable.Ejecutar(itemNode.Imagen, this, estela);
+            }
+        }
+        public void IniciarTimers()
         {
             movimientoTimer.Start();
+            itemsTimer.Start();
         }
 
         public void DetenerMovimientoAutomatico()
@@ -108,9 +132,13 @@ namespace Proyecto1_Tron
                 {
                     //currentNode.Moto;
                 }
+                else if (currentNode.Ocupante == "Estela")
+                {
+
+                }
                 else if (currentNode.Ocupante == "Item")
                 {
-                    currentNode.Item.Ejecutar(currentNode.Imagen, this, estela);
+                    itemsRecogidos.Enqueue(currentNode);
                     currentNode.Item.numImages--;
                     VentanaPrincipal.Controls.Remove(currentNode.Imagen);
                 }

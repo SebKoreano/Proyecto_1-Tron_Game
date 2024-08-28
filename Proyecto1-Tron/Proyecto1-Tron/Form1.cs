@@ -27,7 +27,7 @@ namespace Proyecto1_Tron
             items = new Items(grid,this);
             poderes = new Poderes(grid, this);
 
-            moto.IniciarMovimientoAutomatico();
+            moto.IniciarTimers();
             
 
             // Configurar el formulario para capturar las teclas
