@@ -111,14 +111,14 @@ namespace Proyecto1_Tron
                 }
                 else if (moto.currentNode.Ocupante == "Item")
                 {
-                    moto.itemsRecogidos.Enqueue(moto.currentNode);
+                    moto.inventario.itemsRecogidos.Enqueue(moto.currentNode);
                     moto.currentNode.Item.numImages--;
                     moto.VentanaPrincipal.Controls.Remove(moto.currentNode.Imagen);
                 }
                 else if (moto.currentNode.Ocupante == "Poder")
                 {
-                    moto.poderesRecogidos.Push(moto.currentNode);
-                    moto.ActualizarPoderDisplay();
+                    moto.inventario.poderesRecogidos.Push(moto.currentNode);
+                    moto.inventario.ActualizarPoderDisplay();
                     moto.currentNode.Poder.numImages--;
                     moto.VentanaPrincipal.Controls.Remove(moto.currentNode.Imagen);
                 }

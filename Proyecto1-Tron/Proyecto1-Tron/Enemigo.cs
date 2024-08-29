@@ -21,7 +21,7 @@ namespace Proyecto1_Tron
         private void IniciarMovimientoAutomatico()
         {
             movimientoAutomaticoTimer = new System.Windows.Forms.Timer();
-            movimientoAutomaticoTimer.Interval = velocidad; // Usar la misma velocidad que la moto principal
+            movimientoAutomaticoTimer.Interval = 500; // Usar la misma velocidad que la moto principal
             movimientoAutomaticoTimer.Tick += MovimientoEnemigo;
             movimientoAutomaticoTimer.Start();
         }
@@ -57,9 +57,9 @@ namespace Proyecto1_Tron
             if (nextNode != null)
             {
                 estela.ManejarEstela(currentNode);
-                Mover(nextNode);
+                motor.Mover(nextNode);
                 estela.ManejarEstela(currentNode);
-                Mover(nextNode);
+                motor.Mover(nextNode);
             }
             else
             {

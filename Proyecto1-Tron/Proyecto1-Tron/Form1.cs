@@ -30,7 +30,7 @@ namespace Proyecto1_Tron
             enemigos = new List<Enemigo>();
             //AgregarEnemigos(3); // Agregar 3 enemigos
 
-            moto.IniciarTimers();
+            moto.motor.IniciarTimers();
 
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(moto.LeerTeclas);

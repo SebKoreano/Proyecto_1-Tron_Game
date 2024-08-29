@@ -1,249 +1,44 @@
 ﻿using Proyecto1_Tron;
 using PruebasDePOO.Nodes;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 
 namespace Proyecto1_Tron
 {
     public class Moto
     {
-        internal LinkedList<Segmento> segmentos; // Lista enlazada que contiene la moto y los segmentos de la estela
+        internal LinkedList<Segmento> segmentos;
         internal FourNode currentNode;
         internal PictureBox motoPictureBox;
-        public Form VentanaPrincipal;
-        public Grid grid;
+        internal Form VentanaPrincipal;
+        internal Grid grid;
         internal Estela estela;
-        internal int velocidad = 500;
-        internal int gasolina = 100;
-        private int casillasRecorridas = 0;
-        private System.Windows.Forms.Timer movimientoTimer;
-        internal string direccionActual = "Right";
 
-        internal Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
-        private FourNode itemNode;
-        private Items itemEjecutable;
-        internal int itemsVelocidad = 1000;
-        private System.Windows.Forms.Timer itemsTimer;
+        internal Inventario inventario;
+        internal Interfaz interfaz;
+        internal Motor motor;
 
-        public Stack<FourNode> poderesRecogidos = new Stack<FourNode>();
         internal bool puedeMorir = true;
-
-        internal Label gasolinaDisplay;
-        internal PictureBox poderDisplay;
+        internal string direccionActual = "Right";
 
         public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
-            this.estela = estela;
             this.grid = grid;
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
+            this.estela = estela;
 
-            segmentos = new LinkedList<Segmento>(); // Inicializa la lista enlazada
-
+            segmentos = new LinkedList<Segmento>();
             IniciarMoto();
 
-            SetTimers();
+            interfaz = new Interfaz(VentanaPrincipal);
+            inventario = new Inventario(this, VentanaPrincipal, interfaz);
+            motor = new Motor(this, interfaz, inventario);
 
-            IniciarDisplays();
+            interfaz.IniciarDisplays();
+            motor.IniciarTimers();
         }
 
-        public void SetTimers()
-        {
-            // Inicializar el Timer
-            movimientoTimer = new System.Windows.Forms.Timer();
-            movimientoTimer.Interval = velocidad;
-            movimientoTimer.Tick += MovimientoAutomatico;
-
-            itemsTimer = new System.Windows.Forms.Timer();
-            itemsTimer.Interval = itemsVelocidad;
-            itemsTimer.Tick += EjecutarItems;
-        }
-
-        public void EjecutarItems(object sender, EventArgs e)
-        {
-            if (itemsRecogidos.Count > 0)
-            {
-                itemNode = itemsRecogidos.Dequeue();
-                itemEjecutable = itemNode.Item;
-                itemEjecutable.Ejecutar(itemNode.Imagen, itemNode);
-            }
-        }
-        public void IniciarTimers()
-        {
-            movimientoTimer.Start();
-            itemsTimer.Start();
-        }
-
-        public void DetenerMovimientoAutomatico()
-        {
-            if (puedeMorir)
-            {
-                // Detener el temporizador de movimiento
-                movimientoTimer.Stop();
-
-                // Remover la imagen de la moto
-                if (motoPictureBox != null)
-                {
-                    VentanaPrincipal.Controls.Remove(motoPictureBox);
-                    motoPictureBox.Dispose();
-                }
-
-                // Remover todos los segmentos de la estela
-                foreach (PictureBox segmento in estela.segmentosEstela)
-                {
-                    segmento.Visible = false;
-                    VentanaPrincipal.Controls.Remove(segmento);
-                    segmento.Dispose();
-                }
-
-                // Colocar los poderes de la pila en lugares aleatorios del grid
-                ColocarPoderesAleatorios();
-
-                MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void ColocarPoderesAleatorios()
-        {
-            while (poderesRecogidos.Count > 0)
-            {
-                FourNode poderNode = poderesRecogidos.Pop();
-                if (poderNode.Poder != null)
-                {
-                    // Obtener una posición aleatoria en la grid
-                    FourNode nodoAleatorio = ObtenerNodoAleatorio();
-
-                    // Mover el poder a la nueva posición
-                    if (nodoAleatorio != null && nodoAleatorio.GetOcupante() == null)
-                    {
-                        nodoAleatorio.SetOcupante(poderNode.Poder);
-                        nodoAleatorio.Imagen = poderNode.Imagen;
-                        nodoAleatorio.Poder = poderNode.Poder;
-                        nodoAleatorio.Imagen.Location = new Point(nodoAleatorio.X, nodoAleatorio.Y);
-                        nodoAleatorio.Imagen.Visible = true;
-
-                        // Agregar la imagen al formulario si no está ya agregada
-                        if (!VentanaPrincipal.Controls.Contains(nodoAleatorio.Imagen))
-                        {
-                            VentanaPrincipal.Controls.Add(nodoAleatorio.Imagen);
-                        }
-                    }
-                }
-            }
-        }
-
-        private FourNode ObtenerNodoAleatorio()
-        {
-            int colunms = 12;
-            int rows = 10;
-            Random random = new Random();
-
-            // Generar posiciones aleatorias dentro de la grid
-            int randomColumn = random.Next(colunms);
-            int randomRow = random.Next(rows);
-
-            // Navegar hasta la posición aleatoria en la grid
-            FourNode currentNode = grid.GetHead();
-            for (int i = 0; i < randomColumn; i++)
-            {
-                currentNode = currentNode.Right;
-            }
-            for (int j = 0; j < randomRow; j++)
-            {
-                currentNode = currentNode.Down;
-            }
-
-            return currentNode;
-        }
-
-
-
-        private void MovimientoAutomatico(object sender, EventArgs e)
-        {
-            if (gasolina <= 0)
-            {
-                DetenerMovimientoAutomatico();
-                return;
-            }
-
-            FourNode nextNode = null;
-
-            switch (direccionActual)
-            {
-                case "Up":
-                    nextNode = currentNode.Up;
-                    break;
-                case "Down":
-                    nextNode = currentNode.Down;
-                    break;
-                case "Left":
-                    nextNode = currentNode.Left;
-                    break;
-                case "Right":
-                    nextNode = currentNode.Right;
-                    break;
-            }
-
-            if (nextNode != null)
-            {
-                estela.ManejarEstela(currentNode);
-                Mover(nextNode);
-            }
-            else
-            {
-                DetenerMovimientoAutomatico();
-            }
-        }
-
-        public void Mover(FourNode nextNode)
-        {
-            currentNode = nextNode;
-            motoPictureBox.Location = new Point(currentNode.X, currentNode.Y);
-            casillasRecorridas++;
-
-            HitBox();
-
-            if (casillasRecorridas >= 5)
-            {
-                gasolina -= 1;
-                casillasRecorridas = 0;
-                gasolinaDisplay.Text = $"{gasolina}";
-            }
-
-            if (gasolina < 0)
-            {
-                DetenerMovimientoAutomatico();
-            }
-        }
-
-        public void HitBox()
-        {
-            if (currentNode.Imagen != null && currentNode.Ocupante != null)
-            {
-                if (currentNode.Ocupante == "Moto")
-                {
-                    //currentNode.Moto;
-                }
-                else if (currentNode.Ocupante == "Estela")
-                {
-
-                }
-                else if (currentNode.Ocupante == "Item")
-                {
-                    itemsRecogidos.Enqueue(currentNode);
-                    currentNode.Item.numImages--;
-                    VentanaPrincipal.Controls.Remove(currentNode.Imagen);
-                }
-                else if (currentNode.Ocupante == "Poder")
-                {
-                    poderesRecogidos.Push(currentNode);
-                    ActualizarPoderDisplay();
-                    currentNode.Poder.numImages--;
-                    VentanaPrincipal.Controls.Remove(currentNode.Imagen);
-                }
-            }
-        }
-
-        private void IniciarMoto()
+        public void IniciarMoto()
         {
             Image moto = Proyecto1_Tron.Properties.Resources.moto;
             motoPictureBox = new PictureBox
@@ -259,47 +54,29 @@ namespace Proyecto1_Tron
             segmentos.AddFirst(new Segmento(motoPictureBox, currentNode, true));
         }
 
-
-        public void CambiarVelocidad(int nuevaVelocidad)
+        public void DetenerMovimientoAutomatico()
         {
-            velocidad = nuevaVelocidad;
-            movimientoTimer.Interval = velocidad;
-        }
-
-        public void Incrementargasolina(int cantidad)
-        {
-            gasolina += cantidad;
-        }
-
-        // Método para ejecutar el poder en la parte superior de la pila
-        public void EjecutarPoder()
-        {
-            if (poderesRecogidos.Count > 0)
+            if (puedeMorir)
             {
-                FourNode poderNode = poderesRecogidos.Pop();
-                poderNode.Poder.Ejecutar(poderNode.Imagen);
-                poderDisplay.Image = null; // Limpiar la imagen del poder
-                ActualizarPoderDisplay(); // Actualizar la imagen del siguiente poder
-            }
-        }
+                motor.DetenerMovimientoAutomatico();
+                // Remover la imagen de la moto
+                if (motoPictureBox != null)
+                {
+                    VentanaPrincipal.Controls.Remove(motoPictureBox);
+                    motoPictureBox.Dispose();
+                }
 
-        // Método para cambiar el orden de la pila de poderes
-        public void CambiarOrdenPoderes()
-        {
-            poderesRecogidos = new Stack<FourNode>(poderesRecogidos);
-            ActualizarPoderDisplay(); // Actualizar la imagen del nuevo poder
-        }
+                // Remover todos los segmentos de la estela
+                foreach (Segmento segmento in segmentos)
+                {
+                    VentanaPrincipal.Controls.Remove(segmento.pictureBox);
+                    segmento.pictureBox.Dispose();
+                }
 
-        // Método para actualizar la imagen del poder actual en el display
-        public void ActualizarPoderDisplay()
-        {
-            if (poderesRecogidos.Count > 0)
-            {
-                poderDisplay.Image = poderesRecogidos.Peek().Imagen.Image;
-            }
-            else
-            {
-                poderDisplay.Image = null;
+                // Colocar los poderes de la pila en lugares aleatorios del grid
+                inventario.ColocarPoderesAleatorios();
+
+                MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -324,45 +101,12 @@ namespace Proyecto1_Tron
                         direccionActual = "Right";
                     break;
                 case Keys.E:
-                    EjecutarPoder(); // Ejecutar el poder en la parte superior de la pila
+                    inventario.EjecutarPoder();
                     break;
                 case Keys.R:
-                    CambiarOrdenPoderes(); // Cambiar el orden de la pila de poderes
+                    inventario.CambiarOrdenPoderes();
                     break;
             }
         }
-
-        public void IniciarDisplays()
-        {
-            // 
-            // gasolinaDisplay
-            // 
-            gasolinaDisplay = new Label();
-            gasolinaDisplay.AutoSize = true;
-            gasolinaDisplay.BackColor = SystemColors.ActiveBorder;
-            gasolinaDisplay.Font = new Font("Microsoft YaHei", 15F, FontStyle.Bold);
-            gasolinaDisplay.ForeColor = SystemColors.ButtonHighlight;
-            gasolinaDisplay.Location = new Point(791, 730);
-            gasolinaDisplay.Name = "gasolinaDisplay";
-            gasolinaDisplay.Size = new Size(48, 27);
-            gasolinaDisplay.TabIndex = 1;
-            gasolinaDisplay.Text = "100";
-            VentanaPrincipal.Controls.Add(gasolinaDisplay);
-            gasolinaDisplay.BringToFront();
-            // 
-            // poderDisplay
-            // 
-            poderDisplay = new PictureBox();
-            poderDisplay.BackColor = SystemColors.ActiveBorder;
-            poderDisplay.Location = new Point(306, 725);
-            poderDisplay.Name = "poderDisplay";
-            poderDisplay.Size = new Size(100, 50);
-            poderDisplay.SizeMode = PictureBoxSizeMode.AutoSize;
-            poderDisplay.TabIndex = 2;
-            poderDisplay.TabStop = false;
-            VentanaPrincipal.Controls.Add(poderDisplay);
-            poderDisplay.BringToFront();
-        }
     }
 }
-

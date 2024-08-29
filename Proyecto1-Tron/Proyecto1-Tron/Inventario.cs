@@ -9,20 +9,21 @@ namespace Proyecto1_Tron
 {
     public class Inventario
     {
-        internal Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
-        private Stack<FourNode> poderesRecogidos = new Stack<FourNode>();
+        public Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
+        public Stack<FourNode> poderesRecogidos = new Stack<FourNode>();
         private Form VentanaPrincipal;
         private FourNode itemNode;
         private Items itemEjecutable;
         private System.Windows.Forms.Timer itemsTimer;
         internal int itemsVelocidad = 1000;
-        internal PictureBox poderDisplay;
         private Moto moto;
+        private Interfaz interfaz;
 
-        public Inventario(Moto moto, Form ventanaPrincipal)
+        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz)
         {
             VentanaPrincipal = ventanaPrincipal;
             this.moto = moto;
+            this.interfaz = interfaz;
             SetItemsTimer();
         }
 
@@ -50,7 +51,7 @@ namespace Proyecto1_Tron
             {
                 FourNode poderNode = poderesRecogidos.Pop();
                 poderNode.Poder.Ejecutar(poderNode.Imagen);
-                poderDisplay.Image = null;
+                interfaz.poderDisplay.Image = null;
                 ActualizarPoderDisplay();
             }
         }
@@ -65,11 +66,11 @@ namespace Proyecto1_Tron
         {
             if (poderesRecogidos.Count > 0)
             {
-                poderDisplay.Image = poderesRecogidos.Peek().Imagen.Image;
+                interfaz.poderDisplay.Image = poderesRecogidos.Peek().Imagen.Image;
             }
             else
             {
-                poderDisplay.Image = null;
+                interfaz.poderDisplay.Image = null;
             }
         }
 

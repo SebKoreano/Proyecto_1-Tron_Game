@@ -38,13 +38,13 @@ namespace Proyecto1_Tron
 
         public void Gasolina(FourNode itemNode)
         {
-            if ((moto.gasolina + 10) <= 100)
+            if ((moto.motor.gasolina + 10) <= 100)
             {
-                moto.gasolina += 10;
+                moto.motor.gasolina += 10;
             }
             else
             {
-                moto.itemsRecogidos.Enqueue(itemNode);
+                moto.inventario.itemsRecogidos.Enqueue(itemNode);
             }
             
         }

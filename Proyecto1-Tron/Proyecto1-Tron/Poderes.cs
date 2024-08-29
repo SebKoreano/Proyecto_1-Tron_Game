@@ -57,7 +57,7 @@ namespace Proyecto1_Tron
         public void Velocidad()
         {
             
-            moto.CambiarVelocidad(moto.velocidad/2);
+            moto.motor.CambiarVelocidad(moto.motor.velocidad/2);
             moto.motoPictureBox.Image = Proyecto1_Tron.Properties.Resources.motoVelocidad;
 
             TimerVelocidad.Tick += EjecutaVelocidad;
@@ -67,7 +67,7 @@ namespace Proyecto1_Tron
         public void EjecutaVelocidad(object sender, EventArgs e)
         {
             
-            moto.CambiarVelocidad(500);
+            moto.motor.CambiarVelocidad(500);
             moto.motoPictureBox.Image = Proyecto1_Tron.Properties.Resources.moto;
 
             TimerVelocidad.Stop(); // Detener el Timer

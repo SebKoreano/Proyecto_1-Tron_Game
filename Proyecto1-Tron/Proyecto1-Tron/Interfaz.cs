@@ -19,24 +19,34 @@ namespace Proyecto1_Tron
 
         public void IniciarDisplays()
         {
-            // Inicializar y configurar displays
+            // 
+            // gasolinaDisplay
+            // 
             gasolinaDisplay = new Label();
             gasolinaDisplay.AutoSize = true;
             gasolinaDisplay.BackColor = SystemColors.ActiveBorder;
-            gasolinaDisplay.Font = new Font("Microsoft YaHei", 13F, FontStyle.Regular, GraphicsUnit.Point);
-            gasolinaDisplay.Location = new Point(565, 72);
+            gasolinaDisplay.Font = new Font("Microsoft YaHei", 15F, FontStyle.Bold);
+            gasolinaDisplay.ForeColor = SystemColors.ButtonHighlight;
+            gasolinaDisplay.Location = new Point(791, 730);
             gasolinaDisplay.Name = "gasolinaDisplay";
-            gasolinaDisplay.Size = new Size(64, 24);
-            gasolinaDisplay.Text = "100%";
-
-            poderDisplay = new PictureBox();
-            poderDisplay.SizeMode = PictureBoxSizeMode.AutoSize;
-            poderDisplay.Location = new Point(565, 120);
-            poderDisplay.Name = "poderDisplay";
-            poderDisplay.Size = new Size(100, 100);
-
+            gasolinaDisplay.Size = new Size(48, 27);
+            gasolinaDisplay.TabIndex = 1;
+            gasolinaDisplay.Text = "100";
             VentanaPrincipal.Controls.Add(gasolinaDisplay);
+            gasolinaDisplay.BringToFront();
+            // 
+            // poderDisplay
+            // 
+            poderDisplay = new PictureBox();
+            poderDisplay.BackColor = SystemColors.ActiveBorder;
+            poderDisplay.Location = new Point(306, 725);
+            poderDisplay.Name = "poderDisplay";
+            poderDisplay.Size = new Size(100, 50);
+            poderDisplay.SizeMode = PictureBoxSizeMode.AutoSize;
+            poderDisplay.TabIndex = 2;
+            poderDisplay.TabStop = false;
             VentanaPrincipal.Controls.Add(poderDisplay);
+            poderDisplay.BringToFront();
         }
 
         public void ActualizarGasolina(int gasolina)
