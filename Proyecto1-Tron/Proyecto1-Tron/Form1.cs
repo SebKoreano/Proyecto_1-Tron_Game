@@ -24,7 +24,7 @@ namespace Proyecto1_Tron
 
             estela = new Estela(this);
             moto = new Moto(grid, this, estela);
-            items = new Items(grid, this);
+            items = new Items(grid, this, moto, estela);
             poderes = new Poderes(grid, this, moto, estela);
 
             enemigos = new List<Enemigo>();

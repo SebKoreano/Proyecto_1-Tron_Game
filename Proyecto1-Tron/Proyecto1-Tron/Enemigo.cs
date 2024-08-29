@@ -58,11 +58,21 @@ namespace Proyecto1_Tron
             {
                 estela.ManejarEstela(currentNode);
                 Mover(nextNode);
+                estela.ManejarEstela(currentNode);
+                Mover(nextNode);
             }
             else
             {
                 // Si no hay movimiento posible, intenta de nuevo
                 MovimientoEnemigo(sender, e);
+            }
+        }
+
+        public new void DetenerMovimientoAutomatico()
+        {
+            if (puedeMorir)
+            {
+                movimientoAutomaticoTimer.Stop();
             }
         }
     }

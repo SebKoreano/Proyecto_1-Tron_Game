@@ -7,7 +7,7 @@ namespace Proyecto1_Tron
 {
     public class Estela
     {
-        private LinkedList<PictureBox> segmentosEstela; // Lista de segmentos que conforman la estela
+        public LinkedList<PictureBox> segmentosEstela; // Lista de segmentos que conforman la estela
         private Form ventanaPrincipal;
         private int longitudMaxima; // Longitud máxima de la estela
 

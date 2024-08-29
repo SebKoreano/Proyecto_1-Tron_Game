@@ -6,39 +6,39 @@ namespace Proyecto1_Tron
 {
     public class Moto
     {
-        public LinkedList<Segmento> segmentos; // Lista enlazada que contiene la moto y los segmentos de la estela
-        public FourNode currentNode;
-        public PictureBox motoPictureBox;
-        private Form VentanaPrincipal;
-        private Grid grid;
-        public Estela estela;
-        public int velocidad = 500;
-        public const int normalVelocidad = 500;
-        public int gasolina = 100;
+        internal LinkedList<Segmento> segmentos; // Lista enlazada que contiene la moto y los segmentos de la estela
+        internal FourNode currentNode;
+        internal PictureBox motoPictureBox;
+        public Form VentanaPrincipal;
+        public Grid grid;
+        internal Estela estela;
+        internal int velocidad = 500;
+        internal int gasolina = 100;
         private int casillasRecorridas = 0;
         private System.Windows.Forms.Timer movimientoTimer;
-        public string direccionActual = "Right";
+        internal string direccionActual = "Right";
 
-        public Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
+        internal Queue<FourNode> itemsRecogidos = new Queue<FourNode>();
         private FourNode itemNode;
         private Items itemEjecutable;
-        public int itemsVelocidad = 1000;
+        internal int itemsVelocidad = 1000;
         private System.Windows.Forms.Timer itemsTimer;
 
-        private Stack<FourNode> poderesRecogidos = new Stack<FourNode>();
-        public bool puedeMorir=true;
+        public Stack<FourNode> poderesRecogidos = new Stack<FourNode>();
+        internal bool puedeMorir = true;
 
-        public Label gasolinaDisplay;
-        public PictureBox poderDisplay;
+        internal Label gasolinaDisplay;
+        internal PictureBox poderDisplay;
 
         public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
         {
+            this.estela = estela;
             this.grid = grid;
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
-            this.estela = estela;
 
             segmentos = new LinkedList<Segmento>(); // Inicializa la lista enlazada
+
             IniciarMoto();
 
             SetTimers();
@@ -64,7 +64,7 @@ namespace Proyecto1_Tron
             {
                 itemNode = itemsRecogidos.Dequeue();
                 itemEjecutable = itemNode.Item;
-                itemEjecutable.Ejecutar(itemNode.Imagen, this, estela, itemNode);
+                itemEjecutable.Ejecutar(itemNode.Imagen, itemNode);
             }
         }
         public void IniciarTimers()
@@ -77,10 +77,85 @@ namespace Proyecto1_Tron
         {
             if (puedeMorir)
             {
+                // Detener el temporizador de movimiento
                 movimientoTimer.Stop();
+
+                // Remover la imagen de la moto
+                if (motoPictureBox != null)
+                {
+                    VentanaPrincipal.Controls.Remove(motoPictureBox);
+                    motoPictureBox.Dispose();
+                }
+
+                // Remover todos los segmentos de la estela
+                foreach (PictureBox segmento in estela.segmentosEstela)
+                {
+                    segmento.Visible = false;
+                    VentanaPrincipal.Controls.Remove(segmento);
+                    segmento.Dispose();
+                }
+
+                // Colocar los poderes de la pila en lugares aleatorios del grid
+                ColocarPoderesAleatorios();
+
                 MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void ColocarPoderesAleatorios()
+        {
+            while (poderesRecogidos.Count > 0)
+            {
+                FourNode poderNode = poderesRecogidos.Pop();
+                if (poderNode.Poder != null)
+                {
+                    // Obtener una posición aleatoria en la grid
+                    FourNode nodoAleatorio = ObtenerNodoAleatorio();
+
+                    // Mover el poder a la nueva posición
+                    if (nodoAleatorio != null && nodoAleatorio.GetOcupante() == null)
+                    {
+                        nodoAleatorio.SetOcupante(poderNode.Poder);
+                        nodoAleatorio.Imagen = poderNode.Imagen;
+                        nodoAleatorio.Poder = poderNode.Poder;
+                        nodoAleatorio.Imagen.Location = new Point(nodoAleatorio.X, nodoAleatorio.Y);
+                        nodoAleatorio.Imagen.Visible = true;
+
+                        // Agregar la imagen al formulario si no está ya agregada
+                        if (!VentanaPrincipal.Controls.Contains(nodoAleatorio.Imagen))
+                        {
+                            VentanaPrincipal.Controls.Add(nodoAleatorio.Imagen);
+                        }
+                    }
+                }
+            }
+        }
+
+        private FourNode ObtenerNodoAleatorio()
+        {
+            int colunms = 12;
+            int rows = 10;
+            Random random = new Random();
+
+            // Generar posiciones aleatorias dentro de la grid
+            int randomColumn = random.Next(colunms);
+            int randomRow = random.Next(rows);
+
+            // Navegar hasta la posición aleatoria en la grid
+            FourNode currentNode = grid.GetHead();
+            for (int i = 0; i < randomColumn; i++)
+            {
+                currentNode = currentNode.Right;
+            }
+            for (int j = 0; j < randomRow; j++)
+            {
+                currentNode = currentNode.Down;
+            }
+
+            return currentNode;
+        }
+
+
 
         private void MovimientoAutomatico(object sender, EventArgs e)
         {
@@ -132,6 +207,11 @@ namespace Proyecto1_Tron
                 gasolina -= 1;
                 casillasRecorridas = 0;
                 gasolinaDisplay.Text = $"{gasolina}";
+            }
+
+            if (gasolina < 0)
+            {
+                DetenerMovimientoAutomatico();
             }
         }
 

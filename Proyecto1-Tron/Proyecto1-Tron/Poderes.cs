@@ -11,16 +11,12 @@ namespace Proyecto1_Tron
     {
         private System.Windows.Forms.Timer TimerEscudo;
         private System.Windows.Forms.Timer TimerVelocidad;
-        private Moto moto;
-        private Estela estela;
+        
 
-        public Poderes(Grid grid, Form VentanaPrincipal, Moto moto, Estela estela) : base(grid, VentanaPrincipal)
+        public Poderes(Grid grid, Form VentanaPrincipal, Moto moto, Estela estela) : base(grid, VentanaPrincipal, moto, estela)
         {
             Images = [Properties.Resources.escudo, Properties.Resources.velocidad];
             cantidadImg = 2;
-
-            this.moto = moto;
-            this.estela = estela;
 
             TimerEscudo = new System.Windows.Forms.Timer();
             TimerEscudo.Interval = 3000; //3s

@@ -9,34 +9,34 @@ namespace Proyecto1_Tron
 {
     public class Items : GestionImagenes
     {
-        public Items(Grid grid, Form VentanaPrincipal) : base(grid, VentanaPrincipal)
+        public Items(Grid grid, Form VentanaPrincipal, Moto moto, Estela estela) : base(grid, VentanaPrincipal, moto, estela)
         {
             Images = [Properties.Resources.bomba1, Properties.Resources.gasolina, Properties.Resources.masEstela];
             cantidadImg = 3;
         }
 
-        public void Ejecutar(PictureBox Imagen, Moto moto, Estela estela, FourNode itemNode)
+        public void Ejecutar(PictureBox Imagen, FourNode itemNode)
         {
             if (Imagen.Image.PhysicalDimension.Width == 28)
             {
-                Bomba(moto, estela);
+                Bomba();
             }
             else if (Imagen.Image.PhysicalDimension.Width == 38)
             {
-                Gasolina(moto, estela, itemNode);
+                Gasolina(itemNode);
             }
             else
             {
-                CreceEstela(moto, estela);
+                CreceEstela();
             }
         }
 
-        public void Bomba(Moto moto, Estela estela)
+        public void Bomba()
         {
             moto.DetenerMovimientoAutomatico();
         }
 
-        public void Gasolina(Moto moto, Estela estela, FourNode itemNode)
+        public void Gasolina(FourNode itemNode)
         {
             if ((moto.gasolina + 10) <= 100)
             {
@@ -49,7 +49,7 @@ namespace Proyecto1_Tron
             
         }
 
-        public void CreceEstela(Moto moto, Estela estela)
+        public void CreceEstela()
         {
             estela.IncrementarLongitud(1); 
         }

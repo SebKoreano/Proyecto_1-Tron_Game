@@ -17,12 +17,16 @@ namespace Proyecto1_Tron
         public int numImages = 0;
         internal Form VentanaPrincipal;
         internal PictureBox randomPictureBox;
+        internal Moto moto;
+        internal Estela estela;
 
-        public GestionImagenes(Grid grid, Form VentanaPrincipal) 
+        public GestionImagenes(Grid grid, Form VentanaPrincipal, Moto moto, Estela estela) 
         { 
             this.grid = grid;
             random = new Random();
             this.VentanaPrincipal = VentanaPrincipal;
+            this.moto = moto;
+            this.estela = estela;
         }
 
         public async void GenerarImagenes()
@@ -94,5 +98,7 @@ namespace Proyecto1_Tron
                 numImages++;
             }
         }
+
+
     }
 }
