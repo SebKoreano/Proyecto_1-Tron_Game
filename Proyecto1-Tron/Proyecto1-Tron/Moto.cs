@@ -54,32 +54,6 @@ namespace Proyecto1_Tron
             segmentos.AddFirst(new Segmento(motoPictureBox, currentNode, true));
         }
 
-        public void DetenerMovimientoAutomatico()
-        {
-            if (puedeMorir)
-            {
-                motor.DetenerMovimientoAutomatico();
-                // Remover la imagen de la moto
-                if (motoPictureBox != null)
-                {
-                    VentanaPrincipal.Controls.Remove(motoPictureBox);
-                    motoPictureBox.Dispose();
-                }
-
-                // Remover todos los segmentos de la estela
-                foreach (Segmento segmento in segmentos)
-                {
-                    VentanaPrincipal.Controls.Remove(segmento.pictureBox);
-                    segmento.pictureBox.Dispose();
-                }
-
-                // Colocar los poderes de la pila en lugares aleatorios del grid
-                inventario.ColocarPoderesAleatorios();
-
-                MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         public void LeerTeclas(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)

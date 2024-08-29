@@ -43,7 +43,7 @@ namespace Proyecto1_Tron
         {
             if (gasolina <= 0)
             {
-                moto.DetenerMovimientoAutomatico();
+                DetenerMovimientoAutomatico();
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace Proyecto1_Tron
             }
             else
             {
-                moto.DetenerMovimientoAutomatico();
+                DetenerMovimientoAutomatico();
             }
         }
 
@@ -93,7 +93,7 @@ namespace Proyecto1_Tron
 
             if (gasolina < 0)
             {
-                moto.DetenerMovimientoAutomatico();
+                DetenerMovimientoAutomatico();
             }
         }
 
@@ -107,7 +107,7 @@ namespace Proyecto1_Tron
                 }
                 else if (moto.currentNode.Ocupante == "Estela")
                 {
-
+                    DetenerMovimientoAutomatico();
                 }
                 else if (moto.currentNode.Ocupante == "Item")
                 {

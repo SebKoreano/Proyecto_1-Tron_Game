@@ -33,7 +33,7 @@ namespace Proyecto1_Tron
 
         public void Bomba()
         {
-            moto.DetenerMovimientoAutomatico();
+            moto.motor.DetenerMovimientoAutomatico();
         }
 
         public void Gasolina(FourNode itemNode)
