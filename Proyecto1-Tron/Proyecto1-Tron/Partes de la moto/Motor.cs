@@ -22,11 +22,11 @@ namespace Proyecto1_Tron
         {
             this.moto = moto;
             this.interfaz = interfaz;
-            this.inventario = inventario;  
+            this.inventario = inventario;
             SetTimers();
         }
 
-        public void SetTimers()
+        private void SetTimers()
         {
             // Inicializar el Timer
             movimientoTimer = new System.Windows.Forms.Timer();
@@ -39,14 +39,8 @@ namespace Proyecto1_Tron
             movimientoTimer.Start();
         }
 
-        public void MovimientoAutomatico(object sender, EventArgs e)
+        private void MovimientoAutomatico(object sender, EventArgs e)
         {
-            if (gasolina <= 0)
-            {
-                DetenerMovimientoAutomatico();
-                return;
-            }
-
             FourNode nextNode = null;
 
             switch (moto.direccionActual)
@@ -97,7 +91,7 @@ namespace Proyecto1_Tron
             }
         }
 
-        public void HitBox()
+        private void HitBox()
         {
             if (moto.currentNode.Imagen != null && moto.currentNode.Ocupante != null)
             {
@@ -107,7 +101,7 @@ namespace Proyecto1_Tron
                 }
                 else if (moto.currentNode.Ocupante == "Estela")
                 {
-                    DetenerMovimientoAutomatico();
+                    //DetenerMovimientoAutomatico();
                 }
                 else if (moto.currentNode.Ocupante == "Item")
                 {
@@ -158,11 +152,6 @@ namespace Proyecto1_Tron
         {
             velocidad = nuevaVelocidad;
             movimientoTimer.Interval = velocidad;
-        }
-
-        public void IncrementarGasolina(int cantidad)
-        {
-            gasolina += cantidad;
         }
     }
 }

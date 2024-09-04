@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto1_Tron
+namespace Proyecto1_Tron.LinkedLists
 {
     public class Segmento
     {

@@ -1,4 +1,4 @@
-﻿using Proyecto1_Tron;
+﻿using Proyecto1_Tron.LinkedLists;
 using PruebasDePOO.Nodes;
 using System.Collections.Generic;
 
@@ -20,30 +20,29 @@ namespace Proyecto1_Tron
         internal bool puedeMorir = true;
         internal string direccionActual = "Right";
 
-        public Moto(Grid grid, Form ventanaPrincipal, Estela estela)
+        public Moto(Grid grid, Form ventanaPrincipal, Image imageMoto)
         {
             this.grid = grid;
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
-            this.estela = estela;
 
             segmentos = new LinkedList<Segmento>();
-            IniciarMoto();
+            IniciarMoto(imageMoto);
 
+            estela = new Estela(ventanaPrincipal);
             interfaz = new Interfaz(VentanaPrincipal);
-            inventario = new Inventario(this, VentanaPrincipal, interfaz);
+            inventario = new Inventario(this, VentanaPrincipal, interfaz, estela);
             motor = new Motor(this, interfaz, inventario);
 
             interfaz.IniciarDisplays();
             motor.IniciarTimers();
         }
 
-        public void IniciarMoto()
+        private void IniciarMoto(Image imageMoto)
         {
-            Image moto = Proyecto1_Tron.Properties.Resources.moto;
             motoPictureBox = new PictureBox
             {
-                Image = moto,
+                Image = imageMoto,
                 SizeMode = PictureBoxSizeMode.AutoSize,
                 Location = new Point(currentNode.X, currentNode.Y)
             };

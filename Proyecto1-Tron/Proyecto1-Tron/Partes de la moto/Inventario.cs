@@ -1,4 +1,5 @@
-﻿using PruebasDePOO.Nodes;
+﻿using Proyecto1_Tron.Objetos;
+using PruebasDePOO.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,15 @@ namespace Proyecto1_Tron
         private System.Windows.Forms.Timer itemsTimer;
         internal int itemsVelocidad = 1000;
         private Moto moto;
+        private Estela estela;
         private Interfaz interfaz;
 
-        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz)
+        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz, Estela estela)
         {
             VentanaPrincipal = ventanaPrincipal;
             this.moto = moto;
             this.interfaz = interfaz;
+            this.estela = estela;
             SetItemsTimer();
         }
 
@@ -35,13 +38,13 @@ namespace Proyecto1_Tron
             itemsTimer.Start();
         }
 
-        public void EjecutarItems(object sender, EventArgs e)
+        private void EjecutarItems(object sender, EventArgs e)
         {
             if (itemsRecogidos.Count > 0)
             {
                 itemNode = itemsRecogidos.Dequeue();
                 itemEjecutable = itemNode.Item;
-                itemEjecutable.Ejecutar(itemNode.Imagen, itemNode);
+                itemEjecutable.Ejecutar(itemNode.Imagen, itemNode, moto, estela);
             }
         }
 
@@ -50,7 +53,7 @@ namespace Proyecto1_Tron
             if (poderesRecogidos.Count > 0)
             {
                 FourNode poderNode = poderesRecogidos.Pop();
-                poderNode.Poder.Ejecutar(poderNode.Imagen);
+                poderNode.Poder.Ejecutar(poderNode.Imagen, moto);
                 interfaz.poderDisplay.Image = null;
                 ActualizarPoderDisplay();
             }
@@ -87,11 +90,7 @@ namespace Proyecto1_Tron
                     // Mover el poder a la nueva posición
                     if (nodoAleatorio != null && nodoAleatorio.GetOcupante() == null)
                     {
-                        nodoAleatorio.SetOcupante(poderNode.Poder);
-                        nodoAleatorio.Imagen = poderNode.Imagen;
-                        nodoAleatorio.Poder = poderNode.Poder;
-                        nodoAleatorio.Imagen.Location = new Point(nodoAleatorio.X, nodoAleatorio.Y);
-                        nodoAleatorio.Imagen.Visible = true;
+                        SetImagen(nodoAleatorio, poderNode);
 
                         // Agregar la imagen al formulario si no está ya agregada
                         if (!VentanaPrincipal.Controls.Contains(nodoAleatorio.Imagen))
@@ -101,6 +100,15 @@ namespace Proyecto1_Tron
                     }
                 }
             }
+        }
+
+        private void SetImagen(FourNode nodoAleatorio, FourNode poderNode)
+        {
+            nodoAleatorio.SetOcupante(poderNode.Poder);
+            nodoAleatorio.Imagen = poderNode.Imagen;
+            nodoAleatorio.Poder = poderNode.Poder;
+            nodoAleatorio.Imagen.Location = new Point(nodoAleatorio.X, nodoAleatorio.Y);
+            nodoAleatorio.Imagen.Visible = true;
         }
 
         private FourNode ObtenerNodoAleatorio()

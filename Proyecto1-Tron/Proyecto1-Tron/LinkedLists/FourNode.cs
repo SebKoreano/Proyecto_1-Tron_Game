@@ -1,4 +1,5 @@
 ﻿using Proyecto1_Tron;
+using Proyecto1_Tron.Objetos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

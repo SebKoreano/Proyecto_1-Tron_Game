@@ -11,9 +11,11 @@ namespace Proyecto1_Tron
     public class Grid
     {
         private FourLinkedList newGrid;
-        public Grid()
+        private int tamaño;
+        public Grid(int tamaño)
         {
             newGrid = new FourLinkedList();
+            this.tamaño = tamaño;
         }
 
         public void CreateGrid(int columns, int rows)
@@ -36,7 +38,7 @@ namespace Proyecto1_Tron
                         LeftNode = LeftNode.Down;
                     }
 
-                    y += 75;
+                    y += tamaño;
 
                     newGrid.AddDown(x, y, TopNode, LeftNode);
                 }
@@ -44,7 +46,7 @@ namespace Proyecto1_Tron
                 y = 0;
                 if (col < columns - 1)
                 {
-                    x += 75;
+                    x += tamaño;
                     newGrid.AddRight(x, y);
                     TopNode = TopNode.Right;
                 }
@@ -55,27 +57,5 @@ namespace Proyecto1_Tron
         {
             return newGrid.GetHead();
         }
-
-        public FourNode FindNodeByCoordinates(int x, int y)
-        {
-            FourNode currentRow = newGrid.GetHead();
-
-            while (currentRow != null)
-            {
-                FourNode currentNode = currentRow;
-                while (currentNode != null)
-                {
-                    if (currentNode.X == x && currentNode.Y == y)
-                    {
-                        return currentNode;
-                    }
-                    currentNode = currentNode.Right;
-                }
-                currentRow = currentRow.Down;
-            }
-
-            return null; // Retorna null si no se encuentra el nodo con las coordenadas especificadas
-        }
-
     }
 }

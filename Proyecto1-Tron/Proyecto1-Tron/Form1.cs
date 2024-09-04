@@ -3,6 +3,7 @@ using PruebasDePOO.Nodes;
 using System.Drawing.Text;
 using static System.Net.WebRequestMethods;
 using System.Timers;
+using Proyecto1_Tron.Objetos;
 
 namespace Proyecto1_Tron
 {
@@ -19,16 +20,15 @@ namespace Proyecto1_Tron
         {
             InitializeComponent();
 
-            grid = new Grid();
+            grid = new Grid(75);
             grid.CreateGrid(12, 10);
 
-            estela = new Estela(this);
-            moto = new Moto(grid, this, estela);
-            items = new Items(grid, this, moto, estela);
-            poderes = new Poderes(grid, this, moto, estela);
+            moto = new Moto(grid, this, Proyecto1_Tron.Properties.Resources.moto);
+            items = new Items(grid, this);
+            poderes = new Poderes(grid, this);
 
-            enemigos = new List<Enemigo>();
-            //AgregarEnemigos(3); // Agregar 3 enemigos
+            //enemigos = new List<Enemigo>();
+            //AgregarEnemigos(4); // Agregar 3 enemigos
 
             moto.motor.IniciarTimers();
 
@@ -42,7 +42,7 @@ namespace Proyecto1_Tron
         {
             for (int i = 0; i < cantidad; i++)
             {
-                Enemigo nuevoEnemigo = new Enemigo(grid, this, estela);
+                Enemigo nuevoEnemigo = new Enemigo(grid, this, Proyecto1_Tron.Properties.Resources.enemigo);
                 enemigos.Add(nuevoEnemigo);
             }
         }

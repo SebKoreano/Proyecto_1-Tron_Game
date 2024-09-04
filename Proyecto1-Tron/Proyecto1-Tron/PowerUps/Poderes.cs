@@ -5,15 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Proyecto1_Tron
+namespace Proyecto1_Tron.Objetos
 {
     public class Poderes : GestionImagenes
     {
         private System.Windows.Forms.Timer TimerEscudo;
         private System.Windows.Forms.Timer TimerVelocidad;
-        
 
-        public Poderes(Grid grid, Form VentanaPrincipal, Moto moto, Estela estela) : base(grid, VentanaPrincipal, moto, estela)
+        public Poderes(Grid grid, Form VentanaPrincipal) : base(grid, VentanaPrincipal)
         {
             Images = [Properties.Resources.escudo, Properties.Resources.velocidad];
             cantidadImg = 2;
@@ -24,51 +23,51 @@ namespace Proyecto1_Tron
             TimerVelocidad.Interval = 3000; //3s
         }
 
-        public new void Ejecutar(PictureBox Imagen)
+        public void Ejecutar(PictureBox Imagen, Moto moto)
         {
             if (Imagen.Image.PhysicalDimension.Width == 23)
             {
-                Escudo();
+                Escudo(moto);
             }
             else
             {
-                Velocidad();
+                Velocidad(moto);
             }
         }
 
-        public void Escudo()
+        private void Escudo(Moto moto)
         {
             moto.puedeMorir = false;
-            moto.motoPictureBox.Image = Proyecto1_Tron.Properties.Resources.motoEscudo;
+            moto.motoPictureBox.Image = Properties.Resources.motoEscudo;
 
-            TimerEscudo.Tick += EjecutaEscudo;
+            TimerEscudo.Tick += (sender, e) => EjecutaEscudo(sender, e, moto);
             TimerEscudo.Start(); // Iniciar el Timer
         }
 
-        public void EjecutaEscudo(object sender, EventArgs e)
+        private void EjecutaEscudo(object sender, EventArgs e, Moto moto)
         {
             moto.puedeMorir = true;
-            moto.motoPictureBox.Image = Proyecto1_Tron.Properties.Resources.moto;
+            moto.motoPictureBox.Image = Properties.Resources.moto;
 
             TimerEscudo.Stop(); // Detener el Timer
             TimerEscudo.Dispose(); // Liberar recursos
         }
 
-        public void Velocidad()
+        private void Velocidad(Moto moto)
         {
-            
-            moto.motor.CambiarVelocidad(moto.motor.velocidad/2);
-            moto.motoPictureBox.Image = Proyecto1_Tron.Properties.Resources.motoVelocidad;
 
-            TimerVelocidad.Tick += EjecutaVelocidad;
+            moto.motor.CambiarVelocidad(moto.motor.velocidad / 2);
+            moto.motoPictureBox.Image = Properties.Resources.motoVelocidad;
+
+            TimerVelocidad.Tick += (sender, e) => EjecutaVelocidad(sender, e, moto);
             TimerVelocidad.Start(); // Iniciar el Timer
         }
 
-        public void EjecutaVelocidad(object sender, EventArgs e)
+        private void EjecutaVelocidad(object sender, EventArgs e, Moto moto)
         {
-            
+
             moto.motor.CambiarVelocidad(500);
-            moto.motoPictureBox.Image = Proyecto1_Tron.Properties.Resources.moto;
+            moto.motoPictureBox.Image = Properties.Resources.moto;
 
             TimerVelocidad.Stop(); // Detener el Timer
             TimerVelocidad.Dispose(); // Liberar recursos

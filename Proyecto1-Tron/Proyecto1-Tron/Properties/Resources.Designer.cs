@@ -83,6 +83,16 @@ namespace Proyecto1_Tron.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap enemigo {
+            get {
+                object obj = ResourceManager.GetObject("enemigo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap escudo {
             get {
                 object obj = ResourceManager.GetObject("escudo", resourceCulture);
