@@ -12,20 +12,36 @@ namespace Proyecto1_Tron
         private Moto moto;
         private Interfaz interfaz;
         private System.Windows.Forms.Timer movimientoTimer;
-        internal int velocidad = 500;
-        internal const int normalVelocidad = 500;
+        internal int velocidad;
+        internal int normalVelocidad;
         internal int gasolina = 100;
         private int casillasRecorridas = 0;
         private Inventario inventario;
 
-        public Motor(Moto moto, Interfaz interfaz, Inventario inventario)
+        public Motor(Moto moto, Interfaz interfaz, Inventario inventario, int velocidad)
         {
             this.moto = moto;
             this.interfaz = interfaz;
             this.inventario = inventario;
+            SetVelocidad(velocidad);
             SetTimers();
         }
+        
+        private void SetVelocidad(int velocidad)
+        {
+            int velocidadFinal = (500 * (velocidad / 5));
 
+            if ( velocidadFinal > 0)
+            {
+                this.velocidad = velocidadFinal;
+            }
+            else
+            {
+                this.velocidad = 500;
+            }
+
+            normalVelocidad = this.velocidad;
+        }
         private void SetTimers()
         {
             // Inicializar el Timer

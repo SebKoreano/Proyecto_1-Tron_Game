@@ -66,7 +66,7 @@ namespace Proyecto1_Tron.Objetos
         private void EjecutaVelocidad(object sender, EventArgs e, Moto moto)
         {
 
-            moto.motor.CambiarVelocidad(500);
+            moto.motor.CambiarVelocidad(moto.motor.normalVelocidad);
             moto.motoPictureBox.Image = Properties.Resources.moto;
 
             TimerVelocidad.Stop(); // Detener el Timer

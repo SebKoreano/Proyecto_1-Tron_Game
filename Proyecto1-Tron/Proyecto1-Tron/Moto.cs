@@ -29,10 +29,13 @@ namespace Proyecto1_Tron
             segmentos = new LinkedList<Segmento>();
             IniciarMoto(imageMoto);
 
+            Random random = new Random();
+            int velocidad = random.Next(1, 11);
+
             estela = new Estela(ventanaPrincipal);
             interfaz = new Interfaz(VentanaPrincipal);
             inventario = new Inventario(this, VentanaPrincipal, interfaz, estela);
-            motor = new Motor(this, interfaz, inventario);
+            motor = new Motor(this, interfaz, inventario, velocidad);
 
             interfaz.IniciarDisplays();
             motor.IniciarTimers();
