@@ -20,17 +20,18 @@ namespace Proyecto1_Tron
         {
             InitializeComponent();
 
-            grid = new Grid(75);
-            grid.CreateGrid(12, 10);
+            grid = new Grid(75, 12, 10);
+            grid.CreateGrid();
 
             moto = new Moto(grid, this, Proyecto1_Tron.Properties.Resources.moto);
             items = new Items(grid, this);
             poderes = new Poderes(grid, this);
 
-            //enemigos = new List<Enemigo>();
-            //AgregarEnemigos(4); // Agregar 3 enemigos
+            enemigos = new List<Enemigo>();
+            AgregarEnemigos(1); // Agregar enemigos
 
             moto.motor.IniciarTimers();
+            moto.interfaz.IniciarDisplays();
 
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(moto.LeerTeclas);
@@ -43,6 +44,7 @@ namespace Proyecto1_Tron
             for (int i = 0; i < cantidad; i++)
             {
                 Enemigo nuevoEnemigo = new Enemigo(grid, this, Proyecto1_Tron.Properties.Resources.enemigo);
+                nuevoEnemigo.IniciarMovimientoAutomatico(); // Iniciar movimiento y poderes automáticos
                 enemigos.Add(nuevoEnemigo);
             }
         }
@@ -52,5 +54,10 @@ namespace Proyecto1_Tron
             await Task.Run(() => items.GenerarImagenes());
             await Task.Run(() => poderes.GenerarImagenes());
         }
+
+        /*private void Update(object sender, EventArgs e)
+        {
+            foreach (PictureBox moto in )
+        }*/
     }
 }

@@ -9,14 +9,14 @@ namespace Proyecto1_Tron
 {
     public class Motor
     {
-        private Moto moto;
-        private Interfaz interfaz;
-        private System.Windows.Forms.Timer movimientoTimer;
+        internal Moto moto;
+        internal Interfaz interfaz;
+        internal System.Windows.Forms.Timer movimientoTimer;
         internal int velocidad;
         internal int normalVelocidad;
         internal int gasolina = 100;
-        private int casillasRecorridas = 0;
-        private Inventario inventario;
+        internal int casillasRecorridas = 0;
+        internal Inventario inventario;
 
         public Motor(Moto moto, Interfaz interfaz, Inventario inventario, int velocidad)
         {
@@ -98,7 +98,10 @@ namespace Proyecto1_Tron
             {
                 gasolina -= 1;
                 casillasRecorridas = 0;
-                interfaz.ActualizarGasolina(gasolina);
+                if (interfaz != null)
+                {
+                    interfaz.ActualizarGasolina(gasolina);
+                }
             }
 
             if (gasolina < 0)
@@ -118,16 +121,19 @@ namespace Proyecto1_Tron
                 else if (moto.currentNode.Ocupante == "Estela")
                 {
                     //DetenerMovimientoAutomatico();
+                    
                 }
                 else if (moto.currentNode.Ocupante == "Item")
                 {
-                    moto.inventario.itemsRecogidos.Enqueue(moto.currentNode);
+                    FourNode itemNode = moto.currentNode;
+                    moto.inventario.itemsRecogidos.Enqueue(itemNode);
                     moto.currentNode.Item.numImages--;
                     moto.VentanaPrincipal.Controls.Remove(moto.currentNode.Imagen);
                 }
                 else if (moto.currentNode.Ocupante == "Poder")
                 {
-                    moto.inventario.poderesRecogidos.Push(moto.currentNode);
+                    FourNode poderNode = moto.currentNode;
+                    moto.inventario.poderesRecogidos.Push(poderNode);
                     moto.inventario.ActualizarPoderDisplay();
                     moto.currentNode.Poder.numImages--;
                     moto.VentanaPrincipal.Controls.Remove(moto.currentNode.Imagen);
@@ -135,7 +141,7 @@ namespace Proyecto1_Tron
             }
         }
 
-        public void DetenerMovimientoAutomatico()
+        public virtual void DetenerMovimientoAutomatico()
         {
             if (moto.puedeMorir)
             {
@@ -147,6 +153,7 @@ namespace Proyecto1_Tron
                 {
                     moto.VentanaPrincipal.Controls.Remove(moto.motoPictureBox);
                     moto.motoPictureBox.Dispose();
+                    moto.motoPictureBox = null;
                 }
 
                 // Remover todos los segmentos de la estela
@@ -160,7 +167,7 @@ namespace Proyecto1_Tron
                 // Colocar los poderes de la pila en lugares aleatorios del grid
                 inventario.ColocarPoderesAleatorios();
 
-                MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

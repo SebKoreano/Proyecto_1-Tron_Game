@@ -62,9 +62,6 @@ namespace PruebasDePOO.Nodes
             }
             else if (obj == null)
             {
-                moto = null;
-                Item = null;
-                Poder = null;
                 Ocupante = "null";
             }
         }

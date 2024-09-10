@@ -12,13 +12,17 @@ namespace Proyecto1_Tron
     {
         private FourLinkedList newGrid;
         private int tamaño;
-        public Grid(int tamaño)
+        public int columns;
+        public int rows;
+        public Grid(int tamaño, int columns, int rows)
         {
             newGrid = new FourLinkedList();
             this.tamaño = tamaño;
+            this.columns = columns;
+            this.rows = rows;
         }
 
-        public void CreateGrid(int columns, int rows)
+        public void CreateGrid()
         {
             int x = 0;
             int y = 0;

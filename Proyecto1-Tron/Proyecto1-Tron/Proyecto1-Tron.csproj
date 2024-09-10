@@ -14,6 +14,7 @@
     <None Remove="Resources\estela.png" />
     <None Remove="Resources\estela1.png" />
     <None Remove="Resources\estela2.png" />
+    <None Remove="Resources\estela3.jpeg" />
     <None Remove="Resources\image-removebg-preview %281%29.png" />
     <None Remove="Resources\image-removebg-preview %282%29.png" />
     <None Remove="Resources\image-removebg-preview_resized %281%29.png" />

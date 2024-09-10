@@ -20,14 +20,16 @@ namespace Proyecto1_Tron
         private Moto moto;
         private Estela estela;
         private Interfaz interfaz;
+        private Image imagenMoto;
 
-        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz, Estela estela)
+        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz, Estela estela, Image imagenMoto)
         {
             VentanaPrincipal = ventanaPrincipal;
             this.moto = moto;
             this.interfaz = interfaz;
             this.estela = estela;
             SetItemsTimer();
+            this.imagenMoto = imagenMoto;
         }
 
         private void SetItemsTimer()
@@ -44,7 +46,10 @@ namespace Proyecto1_Tron
             {
                 itemNode = itemsRecogidos.Dequeue();
                 itemEjecutable = itemNode.Item;
-                itemEjecutable.Ejecutar(itemNode.Imagen, itemNode, moto, estela);
+                if (itemEjecutable != null)
+                {
+                    itemEjecutable.Ejecutar(itemNode.Imagen, itemNode, moto, estela);
+                }
             }
         }
 
@@ -53,8 +58,11 @@ namespace Proyecto1_Tron
             if (poderesRecogidos.Count > 0)
             {
                 FourNode poderNode = poderesRecogidos.Pop();
-                poderNode.Poder.Ejecutar(poderNode.Imagen, moto);
-                interfaz.poderDisplay.Image = null;
+                poderNode.Poder.Ejecutar(poderNode.Imagen, moto, imagenMoto);
+                if (interfaz != null)
+                {
+                    interfaz.poderDisplay.Image = null;
+                }
                 ActualizarPoderDisplay();
             }
         }
@@ -69,11 +77,17 @@ namespace Proyecto1_Tron
         {
             if (poderesRecogidos.Count > 0)
             {
-                interfaz.poderDisplay.Image = poderesRecogidos.Peek().Imagen.Image;
+                if (interfaz != null)
+                {
+                    interfaz.poderDisplay.Image = poderesRecogidos.Peek().Imagen.Image;
+                }
             }
             else
             {
-                interfaz.poderDisplay.Image = null;
+                if (interfaz != null)
+                {
+                    interfaz.poderDisplay.Image = null;
+                }
             }
         }
 

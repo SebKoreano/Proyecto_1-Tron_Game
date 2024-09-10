@@ -34,14 +34,11 @@ namespace Proyecto1_Tron
 
             estela = new Estela(ventanaPrincipal);
             interfaz = new Interfaz(VentanaPrincipal);
-            inventario = new Inventario(this, VentanaPrincipal, interfaz, estela);
+            inventario = new Inventario(this, VentanaPrincipal, interfaz, estela, imageMoto);
             motor = new Motor(this, interfaz, inventario, velocidad);
-
-            interfaz.IniciarDisplays();
-            motor.IniciarTimers();
         }
 
-        private void IniciarMoto(Image imageMoto)
+        internal void IniciarMoto(Image imageMoto)
         {
             motoPictureBox = new PictureBox
             {
