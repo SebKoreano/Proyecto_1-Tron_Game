@@ -9,7 +9,6 @@ namespace Proyecto1_Tron
     public class Enemigo : Moto
     {
         public Random random;
-        internal new Motor motor;
         private System.Windows.Forms.Timer movimientoAutomaticoTimer;
         private System.Windows.Forms.Timer poderTimer;
         private new Interfaz interfaz;
@@ -24,8 +23,8 @@ namespace Proyecto1_Tron
             this.random = new Random();
             int velocidad = random.Next(1, 11);
 
-            estela = new Estela(ventanaPrincipal);
-            inventario = new Inventario(this, ventanaPrincipal, interfaz, estela, imageMoto);
+            estela = new Estela(ventanaPrincipal, this);
+            inventario = new Inventario(this, ventanaPrincipal, interfaz, imageMoto);
             motor = new Motor(this, interfaz, inventario, velocidad);
         }
 

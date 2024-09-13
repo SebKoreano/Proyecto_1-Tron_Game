@@ -10,14 +10,14 @@ namespace Proyecto1_Tron
         public LinkedList<PictureBox> segmentosEstela;
         private Form ventanaPrincipal;
         private int longitudMaxima;
-        private LinkedList<FourNode> posiciones;
+        private Moto moto;
 
-        public Estela(Form ventanaPrincipal, int longitudInicial = 3)
+        public Estela(Form ventanaPrincipal, Moto moto, int longitudInicial = 3)
         {
             this.ventanaPrincipal = ventanaPrincipal;
             segmentosEstela = new LinkedList<PictureBox>();
-            posiciones = new LinkedList<FourNode>();
             longitudMaxima = longitudInicial;
+            this.moto = moto;
         }
 
         // Función para manejar la estela
@@ -41,9 +41,9 @@ namespace Proyecto1_Tron
                 Location = new Point(posicion.X, posicion.Y) 
             };
 
-            posiciones.AddLast(posicion);
             segmentosEstela.AddLast(nuevoSegmento);
-            ventanaPrincipal.Controls.Add(nuevoSegmento); 
+            ventanaPrincipal.Controls.Add(nuevoSegmento);
+            //moto.AddEstelas(nuevoSegmento);
 
             //posicion.SetOcupante(this);
         }
@@ -54,11 +54,9 @@ namespace Proyecto1_Tron
             if (segmentosEstela.Count > 0)
             {
                 PictureBox segmentoAntiguo = segmentosEstela.First.Value;
-                FourNode nodoAntiguo = posiciones.First.Value;
 
                 ventanaPrincipal.Controls.Remove(segmentoAntiguo);
-                //nodoAntiguo.SetOcupante(null);
-
+                //moto.RemoveEstelas(segmentoAntiguo);
                 segmentosEstela.RemoveFirst();
                 segmentoAntiguo.Dispose();
             }

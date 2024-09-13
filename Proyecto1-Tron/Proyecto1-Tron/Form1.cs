@@ -30,7 +30,7 @@ namespace Proyecto1_Tron
             poderes = new Poderes(grid, this);
 
             enemigos = new List<Enemigo>();
-            AgregarEnemigos(1); // Agregar enemigos
+            AgregarEnemigos(4); // Agregar enemigos
 
             moto.motor.IniciarTimers();
             moto.interfaz.IniciarDisplays();

@@ -18,16 +18,14 @@ namespace Proyecto1_Tron
         private System.Windows.Forms.Timer itemsTimer;
         internal int itemsVelocidad = 1000;
         private Moto moto;
-        private Estela estela;
-        private Interfaz interfaz;
         private Image imagenMoto;
+        private Interfaz interfaz;
 
-        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz, Estela estela, Image imagenMoto)
+        public Inventario(Moto moto, Form ventanaPrincipal, Interfaz interfaz, Image imagenMoto)
         {
             VentanaPrincipal = ventanaPrincipal;
             this.moto = moto;
             this.interfaz = interfaz;
-            this.estela = estela;
             SetItemsTimer();
             this.imagenMoto = imagenMoto;
         }
@@ -48,7 +46,7 @@ namespace Proyecto1_Tron
                 itemEjecutable = itemNode.Item;
                 if (itemEjecutable != null)
                 {
-                    itemEjecutable.Ejecutar(itemNode.Imagen, itemNode, moto, estela);
+                    itemEjecutable.Ejecutar(itemNode.Imagen, itemNode, moto, moto.estela);
                 }
             }
         }

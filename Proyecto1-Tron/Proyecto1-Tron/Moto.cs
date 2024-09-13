@@ -12,19 +12,22 @@ namespace Proyecto1_Tron
         internal Form VentanaPrincipal;
         internal Grid grid;
         internal Estela estela;
-
         internal Inventario inventario;
         internal Interfaz interfaz;
         internal Motor motor;
-
         internal bool puedeMorir = true;
         internal string direccionActual = "Right";
+
+        //internal static List<Moto>? motos;
+        //internal static List<PictureBox>? estelas;
 
         public Moto(Grid grid, Form ventanaPrincipal, Image imageMoto)
         {
             this.grid = grid;
             currentNode = grid.GetHead();
             VentanaPrincipal = ventanaPrincipal;
+            //motos = new List<Moto>();
+            //estelas = new List<PictureBox>();
 
             segmentos = new LinkedList<Segmento>();
             IniciarMoto(imageMoto);
@@ -32,9 +35,9 @@ namespace Proyecto1_Tron
             Random random = new Random();
             int velocidad = random.Next(1, 11);
 
-            estela = new Estela(ventanaPrincipal);
+            estela = new Estela(ventanaPrincipal, this);
             interfaz = new Interfaz(VentanaPrincipal);
-            inventario = new Inventario(this, VentanaPrincipal, interfaz, estela, imageMoto);
+            inventario = new Inventario(this, VentanaPrincipal, interfaz, imageMoto);
             motor = new Motor(this, interfaz, inventario, velocidad);
         }
 
@@ -47,6 +50,7 @@ namespace Proyecto1_Tron
                 Location = new Point(currentNode.X, currentNode.Y)
             };
 
+            //AddMotos(this);
             //VentanaPrincipal.
             VentanaPrincipal.Controls.Add(motoPictureBox);
 
@@ -82,5 +86,52 @@ namespace Proyecto1_Tron
                     break;
             }
         }
+
+        //public void AddEstelas(PictureBox estela)
+        //{
+        //    estelas.Add(estela);
+        //}
+
+        //public void AddMotos(Moto moto)
+        //{
+        //    motos.Add(moto);
+        //}
+
+        //public void RemoveEstelas(PictureBox estela)
+        //{
+        //    estelas.Remove(estela);
+        //}
+
+        //public void CheckEstela()
+        //{
+        //    try
+        //    {
+        //        foreach (PictureBox estela in estelas)
+        //        {
+        //            if (motoPictureBox != null && motoPictureBox.Bounds.IntersectsWith(estela.Bounds))
+        //            {
+        //                motor.DetenerMovimientoAutomatico();
+        //            }
+        //        }
+        //    }
+        //    catch { }
+        //}
+
+        //public void CheckMoto()
+        //{
+        //    foreach (Moto moto in motos)
+        //    {
+        //        if (motoPictureBox != moto.motoPictureBox)
+        //        {
+        //            if (motoPictureBox.Bounds.IntersectsWith(moto.motoPictureBox.Bounds))
+        //            {
+        //                motor.DetenerMovimientoAutomatico();
+        //                moto.motor.DetenerMovimientoAutomatico();
+        //            }
+                            
+        //        }
+        //    }
+
+        //}
     }
 }

@@ -10,19 +10,17 @@ namespace Proyecto1_Tron
     public class Motor
     {
         internal Moto moto;
-        internal Interfaz interfaz;
         internal System.Windows.Forms.Timer movimientoTimer;
+        internal Interfaz interfaz;
         internal int velocidad;
         internal int normalVelocidad;
         internal int gasolina = 100;
         internal int casillasRecorridas = 0;
-        internal Inventario inventario;
 
         public Motor(Moto moto, Interfaz interfaz, Inventario inventario, int velocidad)
         {
             this.moto = moto;
             this.interfaz = interfaz;
-            this.inventario = inventario;
             SetVelocidad(velocidad);
             SetTimers();
         }
@@ -114,17 +112,7 @@ namespace Proyecto1_Tron
         {
             if (moto.currentNode.Imagen != null && moto.currentNode.Ocupante != null)
             {
-                moto.VentanaPrincipal.Text = moto.currentNode.Ocupante;
-                if (moto.currentNode.Ocupante == "Moto")
-                {
-                    //currentNode.Moto;
-                }
-                else if (moto.currentNode.Ocupante == "Estela")
-                {
-                    //DetenerMovimientoAutomatico();
-                    
-                }
-                else if (moto.currentNode.Ocupante == "Item")
+                if (moto.currentNode.Ocupante == "Item")
                 {
                     FourNode itemNode = moto.currentNode;
                     moto.inventario.itemsRecogidos.Enqueue(itemNode);
@@ -139,10 +127,13 @@ namespace Proyecto1_Tron
                     moto.currentNode.Poder.numImages--;
                     moto.VentanaPrincipal.Controls.Remove(moto.currentNode.Imagen);
                 }
+
+                //moto.CheckEstela();
+                //moto.CheckMoto();
             }
         }
 
-        public virtual void DetenerMovimientoAutomatico()
+        public void DetenerMovimientoAutomatico()
         {
             if (moto.puedeMorir)
             {
@@ -164,9 +155,7 @@ namespace Proyecto1_Tron
                     segmento.Dispose();
                 }
 
-                inventario.ColocarPoderesAleatorios();
-
-                //MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                moto.inventario.ColocarPoderesAleatorios();
             }
         }
 
