@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto1_Tron
+namespace Proyecto1_Tron.Objetos
 {
     public class GestionImagenes
     {
@@ -18,8 +18,9 @@ namespace Proyecto1_Tron
         internal Form VentanaPrincipal;
         internal PictureBox randomPictureBox;
 
-        public GestionImagenes(Grid grid, Form VentanaPrincipal) 
-        { 
+
+        public GestionImagenes(Grid grid, Form VentanaPrincipal)
+        {
             this.grid = grid;
             random = new Random();
             this.VentanaPrincipal = VentanaPrincipal;
@@ -65,13 +66,9 @@ namespace Proyecto1_Tron
 
         private void Place()
         {
-            // Obtener el tamaño de la grid
-            int colunms = 12; // Asumiendo que la grid es de 5x5
-            int rows = 10;
-
             // Generar posiciones aleatorias dentro de la grid
-            int randomColumn = random.Next(colunms);
-            int randomRow = random.Next(rows);
+            int randomColumn = random.Next(grid.columns);
+            int randomRow = random.Next(grid.rows);
 
             // Navegar hasta la posición aleatoria en la grid
             FourNode currentNode = grid.GetHead();
@@ -94,5 +91,7 @@ namespace Proyecto1_Tron
                 numImages++;
             }
         }
+
+
     }
 }

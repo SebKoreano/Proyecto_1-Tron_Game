@@ -3,6 +3,7 @@ using PruebasDePOO.Nodes;
 using System.Drawing.Text;
 using static System.Net.WebRequestMethods;
 using System.Timers;
+using Proyecto1_Tron.Objetos;
 
 namespace Proyecto1_Tron
 {
@@ -13,24 +14,26 @@ namespace Proyecto1_Tron
         private Estela estela;
         private Items items;
         private Poderes poderes;
-        private List<Enemigo> enemigos; // Lista de enemigos
+        private List<Enemigo> enemigos; 
+        public List<PictureBox> motos;
+        public List<PictureBox> estelas;
 
         public VentanaPrincipal()
         {
             InitializeComponent();
 
-            grid = new Grid();
-            grid.CreateGrid(12, 10);
+            grid = new Grid(75, 12, 10);
+            grid.CreateGrid();
 
-            estela = new Estela(this);
-            moto = new Moto(grid, this, estela);
+            moto = new Moto(grid, this, Proyecto1_Tron.Properties.Resources.moto);
             items = new Items(grid, this);
-            poderes = new Poderes(grid, this, moto, estela);
+            poderes = new Poderes(grid, this);
 
             enemigos = new List<Enemigo>();
-            //AgregarEnemigos(3); // Agregar 3 enemigos
+            AgregarEnemigos(4); // Agregar enemigos
 
-            moto.IniciarTimers();
+            moto.motor.IniciarTimers();
+            moto.interfaz.IniciarDisplays();
 
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(moto.LeerTeclas);
@@ -42,7 +45,8 @@ namespace Proyecto1_Tron
         {
             for (int i = 0; i < cantidad; i++)
             {
-                Enemigo nuevoEnemigo = new Enemigo(grid, this, estela);
+                Enemigo nuevoEnemigo = new Enemigo(grid, this, Proyecto1_Tron.Properties.Resources.enemigo);
+                nuevoEnemigo.IniciarMovimientoAutomatico(); // Iniciar movimiento y poderes automáticos
                 enemigos.Add(nuevoEnemigo);
             }
         }
@@ -52,5 +56,10 @@ namespace Proyecto1_Tron
             await Task.Run(() => items.GenerarImagenes());
             await Task.Run(() => poderes.GenerarImagenes());
         }
+
+        /*private void Update(object sender, EventArgs e)
+        {
+            foreach (PictureBox moto in )
+        }*/
     }
 }

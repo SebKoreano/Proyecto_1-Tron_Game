@@ -1,4 +1,5 @@
 ﻿using Proyecto1_Tron;
+using Proyecto1_Tron.Objetos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,9 +62,6 @@ namespace PruebasDePOO.Nodes
             }
             else if (obj == null)
             {
-                moto = null;
-                Item = null;
-                Poder = null;
                 Ocupante = "null";
             }
         }
@@ -81,6 +79,10 @@ namespace PruebasDePOO.Nodes
             else if (Ocupante == "Poder")
             {
                 return (Poderes)Poder;
+            }
+            else if (Ocupante == "Estela")
+            {
+                return (Estela)estela;
             }
             else
             {

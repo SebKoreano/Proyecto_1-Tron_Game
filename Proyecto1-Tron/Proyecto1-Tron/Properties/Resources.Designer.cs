@@ -73,9 +73,9 @@ namespace Proyecto1_Tron.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap E0FzFPYWYAM_86t {
+        internal static System.Drawing.Bitmap enemigo {
             get {
-                object obj = ResourceManager.GetObject("E0FzFPYWYAM_86t", resourceCulture);
+                object obj = ResourceManager.GetObject("enemigo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,99 +93,9 @@ namespace Proyecto1_Tron.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap estela {
-            get {
-                object obj = ResourceManager.GetObject("estela", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap estela1 {
-            get {
-                object obj = ResourceManager.GetObject("estela1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap estela2 {
-            get {
-                object obj = ResourceManager.GetObject("estela2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap estela3 {
-            get {
-                object obj = ResourceManager.GetObject("estela3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap gasolina {
             get {
                 object obj = ResourceManager.GetObject("gasolina", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap image_removebg_preview__1_ {
-            get {
-                object obj = ResourceManager.GetObject("image-removebg-preview (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap image_removebg_preview__2_ {
-            get {
-                object obj = ResourceManager.GetObject("image-removebg-preview (2)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap image_removebg_preview_resized {
-            get {
-                object obj = ResourceManager.GetObject("image-removebg-preview_resized", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap image_removebg_preview_resized__1_ {
-            get {
-                object obj = ResourceManager.GetObject("image-removebg-preview_resized (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap image_removebg_preview_resized__2_ {
-            get {
-                object obj = ResourceManager.GetObject("image-removebg-preview_resized (2)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

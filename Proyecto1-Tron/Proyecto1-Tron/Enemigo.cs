@@ -1,4 +1,4 @@
-﻿using Proyecto1_Tron;
+﻿using Proyecto1_Tron.LinkedLists;
 using PruebasDePOO.Nodes;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,62 +8,81 @@ namespace Proyecto1_Tron
 {
     public class Enemigo : Moto
     {
-        private Random random;
+        public Random random;
         private System.Windows.Forms.Timer movimientoAutomaticoTimer;
+        private System.Windows.Forms.Timer poderTimer;
+        private new Interfaz interfaz;
 
-        public Enemigo(Grid grid, Form ventanaPrincipal, Estela estela) : base(grid, ventanaPrincipal, estela)
+        public Enemigo(Grid grid, Form ventanaPrincipal, Image imageMoto) : base(grid, ventanaPrincipal, imageMoto) 
         {
-            random = new Random();
-            IniciarMovimientoAutomatico();
+            this.grid = grid;
+            currentNode = grid.GetHead();
+            VentanaPrincipal = ventanaPrincipal;
+
+            segmentos = new LinkedList<Segmento>();
+            this.random = new Random();
+            int velocidad = random.Next(1, 11);
+
+            estela = new Estela(ventanaPrincipal, this);
+            inventario = new Inventario(this, ventanaPrincipal, interfaz, imageMoto);
+            motor = new Motor(this, interfaz, inventario, velocidad);
         }
 
-        // Iniciar el movimiento automático del enemigo
-        private void IniciarMovimientoAutomatico()
+        // Iniciar movimiento automático y activación de poderes automáticos
+        public void IniciarMovimientoAutomatico()
         {
             movimientoAutomaticoTimer = new System.Windows.Forms.Timer();
-            movimientoAutomaticoTimer.Interval = velocidad; // Usar la misma velocidad que la moto principal
+            movimientoAutomaticoTimer.Interval = random.Next(300, 700); // Movimiento en intervalos aleatorios
             movimientoAutomaticoTimer.Tick += MovimientoEnemigo;
             movimientoAutomaticoTimer.Start();
+
+            // Temporizador para ejecutar poderes automáticamente
+            poderTimer = new System.Windows.Forms.Timer();
+            poderTimer.Interval = 5000; // Ejecuta un poder cada 5 segundos
+            poderTimer.Tick += EjecutarPoderAutomatico;
+            poderTimer.Start();
         }
 
         // Método para manejar el movimiento automático del enemigo
         private void MovimientoEnemigo(object sender, EventArgs e)
         {
-            // Movimiento aleatorio
-            int movimientoAleatorio = random.Next(0, 4);
-            FourNode nextNode = null;
-
-            switch (movimientoAleatorio)
+            if (motoPictureBox != null)
             {
-                case 0: // Arriba
-                    nextNode = currentNode.Up;
-                    direccionActual = "Up";
-                    break;
-                case 1: // Abajo
-                    nextNode = currentNode.Down;
-                    direccionActual = "Down";
-                    break;
-                case 2: // Izquierda
-                    nextNode = currentNode.Left;
-                    direccionActual = "Left";
-                    break;
-                case 3: // Derecha
-                    nextNode = currentNode.Right;
-                    direccionActual = "Right";
-                    break;
-            }
+                int movimientoAleatorio = random.Next(0, 4);
+                FourNode nextNode = null;
 
-            // Si hay un nodo siguiente válido, mover al enemigo
-            if (nextNode != null)
-            {
-                estela.ManejarEstela(currentNode);
-                Mover(nextNode);
+                switch (movimientoAleatorio)
+                {
+                    case 0: nextNode = currentNode.Up; direccionActual = "Up"; break;
+                    case 1: nextNode = currentNode.Down; direccionActual = "Down"; break;
+                    case 2: nextNode = currentNode.Left; direccionActual = "Left"; break;
+                    case 3: nextNode = currentNode.Right; direccionActual = "Right"; break;
+                }
+
+                ValidarMovimiento(nextNode);
             }
             else
             {
-                // Si no hay movimiento posible, intenta de nuevo
-                MovimientoEnemigo(sender, e);
+                motor.DetenerMovimientoAutomatico();
+                poderTimer.Stop();
+                movimientoAutomaticoTimer.Stop();
             }
         }
+
+        private void ValidarMovimiento(FourNode nextNode)
+        {
+            if (nextNode != null)
+            {
+                estela.ManejarEstela(currentNode); // Actualizar la estela
+                motor.Mover(nextNode); // Mover al siguiente nodo
+            }
+        }
+
+        // Método para ejecutar poderes automáticamente
+        private void EjecutarPoderAutomatico(object sender, EventArgs e)
+        {
+            inventario.EjecutarPoder(); 
+        }
+
     }
 }
