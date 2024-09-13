@@ -114,6 +114,7 @@ namespace Proyecto1_Tron
         {
             if (moto.currentNode.Imagen != null && moto.currentNode.Ocupante != null)
             {
+                moto.VentanaPrincipal.Text = moto.currentNode.Ocupante;
                 if (moto.currentNode.Ocupante == "Moto")
                 {
                     //currentNode.Moto;
@@ -145,7 +146,6 @@ namespace Proyecto1_Tron
         {
             if (moto.puedeMorir)
             {
-                // Detener el temporizador de movimiento
                 movimientoTimer.Stop();
 
                 // Remover la imagen de la moto
@@ -164,7 +164,6 @@ namespace Proyecto1_Tron
                     segmento.Dispose();
                 }
 
-                // Colocar los poderes de la pila en lugares aleatorios del grid
                 inventario.ColocarPoderesAleatorios();
 
                 //MessageBox.Show("GAME OVER!", "Has perdido!", MessageBoxButtons.OK, MessageBoxIcon.Error);

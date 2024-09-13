@@ -9,7 +9,7 @@ namespace Proyecto1_Tron
     public class Enemigo : Moto
     {
         public Random random;
-        internal new MotorEnemigo motor;
+        internal new Motor motor;
         private System.Windows.Forms.Timer movimientoAutomaticoTimer;
         private System.Windows.Forms.Timer poderTimer;
         private new Interfaz interfaz;
@@ -26,7 +26,7 @@ namespace Proyecto1_Tron
 
             estela = new Estela(ventanaPrincipal);
             inventario = new Inventario(this, ventanaPrincipal, interfaz, estela, imageMoto);
-            motor = new MotorEnemigo(this, interfaz, inventario, velocidad);
+            motor = new Motor(this, interfaz, inventario, velocidad);
         }
 
         // Iniciar movimiento automático y activación de poderes automáticos
@@ -64,6 +64,7 @@ namespace Proyecto1_Tron
             }
             else
             {
+                motor.DetenerMovimientoAutomatico();
                 poderTimer.Stop();
                 movimientoAutomaticoTimer.Stop();
             }
@@ -75,7 +76,6 @@ namespace Proyecto1_Tron
             {
                 estela.ManejarEstela(currentNode); // Actualizar la estela
                 motor.Mover(nextNode); // Mover al siguiente nodo
-                motor.Mover(nextNode);
             }
         }
 

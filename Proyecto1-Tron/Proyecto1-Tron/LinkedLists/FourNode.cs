@@ -80,6 +80,10 @@ namespace PruebasDePOO.Nodes
             {
                 return (Poderes)Poder;
             }
+            else if (Ocupante == "Estela")
+            {
+                return (Estela)estela;
+            }
             else
             {
                 return null;

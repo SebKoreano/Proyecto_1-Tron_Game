@@ -14,7 +14,9 @@ namespace Proyecto1_Tron
         private Estela estela;
         private Items items;
         private Poderes poderes;
-        private List<Enemigo> enemigos; // Lista de enemigos
+        private List<Enemigo> enemigos; 
+        public List<PictureBox> motos;
+        public List<PictureBox> estelas;
 
         public VentanaPrincipal()
         {

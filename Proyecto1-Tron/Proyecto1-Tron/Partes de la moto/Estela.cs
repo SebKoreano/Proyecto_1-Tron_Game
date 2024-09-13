@@ -10,11 +10,13 @@ namespace Proyecto1_Tron
         public LinkedList<PictureBox> segmentosEstela;
         private Form ventanaPrincipal;
         private int longitudMaxima;
+        private LinkedList<FourNode> posiciones;
 
         public Estela(Form ventanaPrincipal, int longitudInicial = 3)
         {
             this.ventanaPrincipal = ventanaPrincipal;
             segmentosEstela = new LinkedList<PictureBox>();
+            posiciones = new LinkedList<FourNode>();
             longitudMaxima = longitudInicial;
         }
 
@@ -23,7 +25,6 @@ namespace Proyecto1_Tron
         {
             AgregarSegmento(nuevaPosicion);
 
-            // Verificar si la longitud de la estela supera la longitud máxima permitida
             while (segmentosEstela.Count > longitudMaxima)
             {
                 RemoverSegmentoAntiguo();
@@ -33,20 +34,18 @@ namespace Proyecto1_Tron
         // Método para agregar un nuevo segmento a la estela
         private void AgregarSegmento(FourNode posicion)
         {
-            // Crear un nuevo segmento visual
             PictureBox nuevoSegmento = new PictureBox
             {
-                Size = new Size(10, 10), // Tamaño del segmento de la estela
+                Size = new Size(10, 10), 
                 BackColor = Color.Blue,
-                Location = new Point(posicion.X, posicion.Y) // Posición basada en el nodo
+                Location = new Point(posicion.X, posicion.Y) 
             };
 
-            // Agregar el nuevo segmento a la lista enlazada
+            posiciones.AddLast(posicion);
             segmentosEstela.AddLast(nuevoSegmento);
-            ventanaPrincipal.Controls.Add(nuevoSegmento); // Agregar el segmento al formulario
+            ventanaPrincipal.Controls.Add(nuevoSegmento); 
 
-            // Establecer que el nodo ahora está ocupado por la estela
-            posicion.SetOcupante("Estela");
+            //posicion.SetOcupante(this);
         }
 
         // Método para remover el segmento más antiguo de la estela
@@ -54,34 +53,15 @@ namespace Proyecto1_Tron
         {
             if (segmentosEstela.Count > 0)
             {
-                // Obtener el PictureBox más antiguo (el primero en la lista)
                 PictureBox segmentoAntiguo = segmentosEstela.First.Value;
+                FourNode nodoAntiguo = posiciones.First.Value;
 
-                // Remover visualmente el PictureBox del formulario
                 ventanaPrincipal.Controls.Remove(segmentoAntiguo);
+                //nodoAntiguo.SetOcupante(null);
 
-                // Obtener el nodo que correspondía al primer segmento de la estela
-                FourNode nodoAntiguo = GetNodeByPictureBox(segmentoAntiguo);
-
-                // Eliminar el ocupante del nodo, ya que el segmento de la estela fue removido
-                if (nodoAntiguo != null)
-                {
-                    nodoAntiguo.SetOcupante(null);
-                }
-                // Remover el PictureBox de la lista enlazada
                 segmentosEstela.RemoveFirst();
-
-                // Liberar recursos del segmento visual
                 segmentoAntiguo.Dispose();
             }
-        }
-
-        // Método para encontrar el nodo correspondiente a un PictureBox de la estela
-        private FourNode GetNodeByPictureBox(PictureBox segmento)
-        {
-            // Implementar lógica para obtener el nodo correspondiente al PictureBox (si es necesario)
-            // Puedes asociar cada segmento con su nodo en un diccionario o directamente en los nodos si hace falta.
-            return null; // Reemplazar con la lógica apropiada
         }
 
         // Método para incrementar la longitud máxima de la estela

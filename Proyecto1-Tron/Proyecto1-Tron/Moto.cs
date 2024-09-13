@@ -47,6 +47,7 @@ namespace Proyecto1_Tron
                 Location = new Point(currentNode.X, currentNode.Y)
             };
 
+            //VentanaPrincipal.
             VentanaPrincipal.Controls.Add(motoPictureBox);
 
             // Añadir la moto a la lista de segmentos
