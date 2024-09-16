@@ -1,6 +1,6 @@
 # Proyecto 1 - Tron
 
-Este proyecto es un videojuego basado en TRON. La finalidad del proyecto es la implementación de las estructuras de datos lineales y sus funcionalidades.
+Este proyecto es una recreación del clásico videojuego TRON, donde los jugadores controlan motos de luz que dejan una estela detrás mientras se mueven. El objetivo es evitar colisionar con las estelas de otras motos y los bordes del mapa mientras recoges ítems y activas poderes especiales. Este proyecto se enfoca en la implementación de estructuras de datos lineales en C#, como listas enlazadas, pilas y colas, para gestionar tanto el movimiento como los elementos del juego.
 
 #### Controles:
 
