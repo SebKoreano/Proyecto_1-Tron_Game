@@ -1,14 +1,30 @@
-# Proyecto 1 - Tron
+# Proyecto 1: Tron Game
 
-Este proyecto es una recreación del clásico videojuego TRON, donde los jugadores controlan motos de luz que dejan una estela detrás mientras se mueven. El objetivo es evitar colisionar con las estelas de otras motos y los bordes del mapa mientras recoges ítems y activas poderes especiales. Este proyecto se enfoca en la implementación de estructuras de datos lineales en C#, como listas enlazadas, pilas y colas, para gestionar tanto el movimiento como los elementos del juego.
+Este proyecto es una implementación del clásico juego Tron desarrollado en C#. El juego simula una carrera de motos futuristas en la que los jugadores deben evitar colisionar con las paredes y las estelas de luz dejadas por sus motos.
 
-#### Controles:
+## Características
 
-- "e" Ejecutar poder
-- "r" Cambiar orden de poder
-- "⭠" Mover izquierda
-- "⭢" Mover derecha
-- "⭡" Mover arriba
-- "⭣" Mover abajo
+- **Modo de un jugador:** Compite contra la inteligencia artificial.
+- **Modo multijugador local:** Juega contra tus amigos en la misma computadora.
+- **Gráficos simples y retro:** Inspirados en el clásico juego de arcade.
+- **Controles intuitivos:** Usa las teclas de dirección para controlar tu moto.
+- **Sonidos y efectos:** Experiencia de juego mejorada con efectos de sonido.
 
-Este proyecto fue hecho en C# 12.0 y .NET 8.0
+## Uso
+
+- Ejecuta el juego desde tu entorno de desarrollo.
+- Usa las teclas de dirección para controlar tu moto y evita colisionar con las paredes y las estelas de luz.
+
+## Contribución
+
+Las contribuciones son bienvenidas. Si deseas contribuir, por favor sigue los siguientes pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y haz commit (`git commit -am 'Añadir nueva funcionalidad'`).
+4. Sube los cambios a tu rama (`git push origin feature/nueva-funcionalidad`).
+5. Abre un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
